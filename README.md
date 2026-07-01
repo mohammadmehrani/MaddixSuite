@@ -7,6 +7,8 @@
 [![Windows](https://img.shields.io/badge/Windows-7%2F8%2F10%2F11-success)]()
 [![Linux](https://img.shields.io/badge/Linux-Debian%2FRHEL%2FArch%2FSUSE-yellow)]()
 
+[![Persian](https://img.shields.io/badge/🇮🇷-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-1a73e8?style=for-the-badge&labelColor=1a1a2e)](README.fa.md)
+
 A comprehensive multi-platform system administration and optimization toolkit.
 
 ---
