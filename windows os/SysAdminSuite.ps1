@@ -9,7 +9,7 @@
     Version: 2.0
     Author: Mohammad Mehrani (Maddix)
     License: MIT
-    GitHub: https://github.com/maddix/MaddixSuite
+    GitHub: https://github.com/mohammadmehrani/MaddixSuite
     Run directly from GitHub (one-liner):
     irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex
 #>
@@ -839,7 +839,7 @@ function Show-Menu {
     Write-Host "" -ForegroundColor Cyan
     Write-Host "████████████████████████████████████████████████████████████████████████████" -ForegroundColor Cyan
     Write-Host "  SysAdminSuite v2.0 · Diagnostic · Repair · Backup · Optimization" -ForegroundColor Cyan
-    Write-Host "  Created by Mohammad Mehrani (Maddix) · github.com/maddix/MaddixSuite" -ForegroundColor Cyan
+    Write-Host "  Created by Mohammad Mehrani (Maddix) · github.com/mohammadmehrani/MaddixSuite" -ForegroundColor Cyan
     Write-Host "████████████████████████████████████████████████████████████████████████████" -ForegroundColor Cyan
     Write-Host ""
     Write-Host " ──── DIAGNOSTIC & REPAIR ────" -ForegroundColor Magenta

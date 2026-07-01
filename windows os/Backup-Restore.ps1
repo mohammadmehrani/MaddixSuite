@@ -8,7 +8,7 @@
 .NOTES
     Version: 1.0
     Author: Mohammad Mehrani (Maddix)
-    GitHub: https://github.com/maddix/MaddixSuite
+    GitHub: https://github.com/mohammadmehrani/MaddixSuite
     Run from GitHub: irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/Backup-Restore.ps1 | iex
 #>
 

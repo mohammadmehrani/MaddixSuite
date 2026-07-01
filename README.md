@@ -159,4 +159,4 @@ MIT License — see [LICENSE](LICENSE).
 ## Connect
 
 - **GitHub**: [github.com/maddix](https://github.com/maddix)
-- **Repository**: [github.com/maddix/MaddixSuite](https://github.com/maddix/MaddixSuite)
+- **Repository**: [github.com/mohammadmehrani/MaddixSuite](https://github.com/mohammadmehrani/MaddixSuite)

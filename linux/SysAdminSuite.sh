@@ -2,7 +2,7 @@
 # =========================================================
 # SysAdminSuite v2.0 - Linux Edition
 # Part of MaddixSuite by Mohammad Mehrani (Maddix)
-# https://github.com/maddix/MaddixSuite
+# https://github.com/mohammadmehrani/MaddixSuite
 #
 # Run directly from GitHub:
 #   bash <(curl -s https://raw.githubusercontent.com/maddix/MaddixSuite/main/linux/SysAdminSuite.sh)
@@ -514,7 +514,7 @@ main() {
             19)
                 echo -e "\n${CYAN}SysAdminSuite v2.0 - Linux Edition${RESET}"
                 echo -e "${CYAN}Part of MaddixSuite${RESET}"
-                echo -e "${CYAN}github.com/maddix/MaddixSuite${RESET}"
+                echo -e "${CYAN}github.com/mohammadmehrani/MaddixSuite${RESET}"
                 echo -e "\n${YELLOW}Check for updates:${RESET}"
                 echo "  bash <(curl -s https://raw.githubusercontent.com/maddix/MaddixSuite/main/linux/SysAdminSuite.sh)"
                 read -p "Press Enter..."
