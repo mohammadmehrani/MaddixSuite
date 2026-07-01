@@ -12,5 +12,5 @@ echo [WARNING] Ensure you trust the source before continuing.
 echo.
 pause
 echo.
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex"
 pause

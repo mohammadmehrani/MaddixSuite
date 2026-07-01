@@ -9,7 +9,7 @@
     Version: 1.0
     Author: Mohammad Mehrani (Maddix)
     GitHub: https://github.com/mohammadmehrani/MaddixSuite
-    Run from GitHub: irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/Backup-Restore.ps1 | iex
+    Run from GitHub: irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows/Backup-Restore.ps1 | iex
 #>
 
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {

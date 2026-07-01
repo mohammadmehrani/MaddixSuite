@@ -22,7 +22,7 @@
 <div dir="ltr">
 
 ```powershell
-irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex
+irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex
 ```
 </div>
 
@@ -30,7 +30,7 @@ irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%2
 <div dir="ltr">
 
 ```batch
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.cmd | iex"
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.cmd | iex"
 ```
 </div>
 
@@ -52,7 +52,7 @@ bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/mai
 <div dir="ltr">
 
 ```powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.ps1" -OutFile "$env:USERPROFILE\Desktop\SysAdminSuite.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.ps1" -OutFile "$env:USERPROFILE\Desktop\SysAdminSuite.ps1"
 ```
 </div>
 3. روی فایل `SysAdminSuite.ps1` راست‌کلیک کنید → **Run with PowerShell**

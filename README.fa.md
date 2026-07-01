@@ -23,7 +23,7 @@
 <div dir="ltr">
 
 ```powershell
-irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex
+irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex
 ```
 </div>
 
@@ -77,7 +77,7 @@ bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/mai
 
 ```
 MaddixSuite/
-├── windows os/          🪟
+├── windows/          🪟
 │   ├── SysAdminSuite.ps1
 │   ├── Registry/        Maddix-RegistryTool.ps1
 │   ├── Network/         Maddix-NetworkPro.ps1

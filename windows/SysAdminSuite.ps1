@@ -11,7 +11,7 @@
     License: MIT
     GitHub: https://github.com/mohammadmehrani/MaddixSuite
     Run directly from GitHub (one-liner):
-    irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex
+    irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex
 #>
 
 #region Self-Elevation and Bypass

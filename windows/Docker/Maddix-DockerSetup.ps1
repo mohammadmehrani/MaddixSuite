@@ -9,7 +9,7 @@
     Version: 1.0
     Author: Mohammad Mehrani (Maddix)
     Part of MaddixSuite: https://github.com/mohammadmehrani/MaddixSuite
-    One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/Docker/Maddix-DockerSetup.ps1 | iex
+    One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/Docker/Maddix-DockerSetup.ps1 | iex
 #>
 
 function Show-Banner {

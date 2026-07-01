@@ -4,8 +4,8 @@
 
 | Platform | Command |
 |----------|---------|
-| **Windows PowerShell** | `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 \| iex` |
-| **Windows CMD** | `powershell -NoProfile -Exec Bypass -Command "irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.cmd \| iex"` |
+| **Windows PowerShell** | `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.ps1 \| iex` |
+| **Windows CMD** | `powershell -NoProfile -Exec Bypass -Command "irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.cmd \| iex"` |
 | **Linux** | `bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/SysAdminSuite.sh)` |
 
 ## Scripts Quick Reference

@@ -9,7 +9,7 @@
     Version: 1.0
     Author: Mohammad Mehrani (Maddix)
     Part of MaddixSuite: https://github.com/mohammadmehrani/MaddixSuite
-    One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/Security/Maddix-SecurityAudit.ps1 | iex
+    One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/Security/Maddix-SecurityAudit.ps1 | iex
 #>
 
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
