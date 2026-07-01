@@ -136,18 +136,35 @@ Lightweight CMD version: Restore Point, SFC, DISM, CHKDSK, Boot Repair, Windows 
 
 ```
 MaddixSuite/
-├── README.md
+├── README.md / README.fa.md         # English & Persian docs
 ├── LICENSE
-├── run.cmd                          # Local Windows launcher
-├── run-online.cmd                   # Online Windows launcher
-├── windows os/
+├── run.cmd / run-online.cmd         # Windows launchers
+│
+├── windows os/                      # 🪟 Windows tools
 │   ├── SysAdminSuite.ps1            # Main toolkit (35 options)
 │   ├── SysAdminSuite.cmd            # CMD version (18 options)
-│   └── Backup-Restore.ps1           # Standalone backup tool
-├── linux/
-│   └── SysAdminSuite.sh             # Universal Linux toolkit
+│   ├── Backup-Restore.ps1           # System state backup
+│   ├── Registry/
+│   │   └── Maddix-RegistryTool.ps1  # Registry manager
+│   ├── Network/
+│   │   └── Maddix-NetworkPro.ps1    # Network toolkit
+│   ├── Cleaner/
+│   │   └── Maddix-SystemCleaner.ps1 # Deep system cleaner
+│   ├── Security/
+│   │   └── Maddix-SecurityAudit.ps1 # Security assessment
+│   └── Optimization/
+│       └── Maddix-PerformanceTuner.ps1 # Performance tuner
+│
+├── linux/                           # 🐧 Linux tools
+│   ├── SysAdminSuite.sh             # Universal toolkit
+│   ├── security/
+│   │   └── maddix-hardener.sh       # Security hardening
+│   └── docker/
+│       └── maddix-docker.sh         # Docker manager
+│
 └── docs/
-    └── usage.md                     # Detailed usage guide
+    ├── usage.md                     # English usage guide
+    └── usage.fa.md                  # Persian usage guide
 ```
 
 ---
