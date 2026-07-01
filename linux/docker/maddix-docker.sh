@@ -11,17 +11,58 @@ set -e
 
 CYAN='\033[0;96m'; GREEN='\033[0;92m'; YELLOW='\033[0;93m'; RED='\033[0;91m'; MAGENTA='\033[0;95m'; GRAY='\033[0;90m'; RESET='\033[0m'
 
+check_root() { [[ $EUID -eq 0 ]] || { echo -e "${RED}Run with sudo for install.${RESET}"; return 1; } }
+
+install_docker_linux() {
+    echo -e "\n${YELLOW}── INSTALLING DOCKER ──${RESET}"
+    check_root || return 1
+
+    if command -v docker &>/dev/null; then
+        echo -e "${GREEN}Docker already installed: $(docker --version 2>/dev/null)${RESET}"
+        return 0
+    fi
+
+    echo "Detecting distro and installing..."
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        case "$ID" in
+            debian|ubuntu|linuxmint)
+                apt update && apt install -y ca-certificates curl gnupg
+                install -m 0755 -d /etc/apt/keyrings
+                curl -fsSL https://download.docker.com/linux/$ID/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$ID $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+                apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+                ;;
+            fedora)
+                dnf -y install dnf-plugins-core
+                dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+                dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+                systemctl enable --now docker
+                ;;
+            arch|manjaro)
+                pacman -S --noconfirm docker docker-compose
+                systemctl enable --now docker
+                ;;
+            opensuse*)
+                zypper install -y docker docker-compose
+                systemctl enable --now docker
+                ;;
+            *)
+                echo -e "${RED}Unsupported: $ID. Use: curl -fsSL https://get.docker.com | sh${RESET}"
+                return 1
+                ;;
+        esac
+    fi
+
+    usermod -aG docker ${SUDO_USER:-$USER} 2>/dev/null || true
+    echo -e "${GREEN}✓ Docker installed! Re-login to use without sudo.${RESET}"
+}
+
 check_docker() {
     if ! command -v docker &>/dev/null; then
-        echo -e "${RED}Docker is not installed.${RESET}"
+        echo -e "${RED}Docker not installed.${RESET}"
         read -p "Install Docker now? (y/n): " ans
-        if [ "$ans" = "y" ]; then
-            curl -fsSL https://get.docker.com | sh
-            usermod -aG docker $SUDO_USER 2>/dev/null || true
-            echo -e "${GREEN}Docker installed. Re-login to use docker without sudo.${RESET}"
-        else
-            return 1
-        fi
+        if [ "$ans" = "y" ]; then install_docker_linux; else return 1; fi
     fi
     return 0
 }
@@ -158,10 +199,11 @@ system_menu() {
 show_menu() {
     show_banner
     echo -e " ${MAGENTA}---- DOCKER MANAGEMENT ----${RESET}"
-    echo "   1.  Container Manager (start/stop/logs/exec)"
-    echo "   2.  Image Manager (pull/remove/build/search)"
-    echo "   3.  System Manager (prune/info/compose)"
-    echo "   4.  Quick Stats (live)"
+    echo "   1.  Install Docker (auto-detect distro)"
+    echo "   2.  Container Manager (start/stop/logs/exec)"
+    echo "   3.  Image Manager (pull/remove/build/search)"
+    echo "   4.  System Manager (prune/info/compose)"
+    echo "   5.  Quick Stats (live)"
     echo "   0.  Exit"
     echo ""
 }
@@ -177,12 +219,13 @@ main() {
     check_docker || exit 1
     while true; do
         show_menu
-        read -p "Select option (0-4): " c
+        read -p "Select option (0-5): " c
         case "$c" in
-            1) container_menu ;;
-            2) image_menu ;;
-            3) system_menu ;;
-            4) quick_stats; read -p "Press Enter..." ;;
+            1) install_docker_linux; read -p "Press Enter..." ;;
+            2) container_menu ;;
+            3) image_menu ;;
+            4) system_menu ;;
+            5) quick_stats; read -p "Press Enter..." ;;
             0) echo -e "${CYAN}Goodbye!${RESET}"; exit 0 ;;
             *) echo -e "${RED}Invalid.${RESET}"; read -p "Press Enter..." ;;
         esac

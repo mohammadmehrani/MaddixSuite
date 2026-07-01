@@ -1,77 +1,61 @@
-# SysAdminSuite Usage Guide
+# MaddixSuite Usage Guide
 
-## Quick Start
+## One-Line Run
 
-### Option A: Run Directly from GitHub (No Download)
+| Platform | Command |
+|----------|---------|
+| **Windows PowerShell** | `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 \| iex` |
+| **Windows CMD** | `powershell -NoProfile -Exec Bypass -Command "irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows%20os/SysAdminSuite.cmd \| iex"` |
+| **Linux** | `bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/SysAdminSuite.sh)` |
 
-1. Open **PowerShell as Administrator**
-2. Paste and run:
-   ```powershell
-   irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/SysAdminSuite.ps1 | iex
-   ```
+## Scripts Quick Reference
 
-### Option B: Download & Run
+### Windows — SysAdminSuite.ps1 (35 Options)
 
-1. Download the script:
-   ```powershell
-   Invoke-WebRequest -Uri "https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows%20os/SysAdminSuite.ps1" -OutFile "$env:USERPROFILE\Desktop\SysAdminSuite.ps1"
-   ```
-2. Right-click `SysAdminSuite.ps1` → **Run with PowerShell** (as Admin)
+| # | Operation |
+|---|-----------|
+| 1-8 | **Repair**: Restore Point, Full Diagnostic, SFC, DISM, CHKDSK, Boot Repair, Reset WU |
+| 9-13 | **Drivers**: List, Update, Remove, Backup, Restore |
+| 14-18 | **Cleanup**: Caches, Disk Cleanup, Prefetch, Performance, SSD |
+| 19-22 | **Backup**: System State, Registry backup/restore, List Restore Points |
+| 23-26 | **Network/Security**: Diagnostics, Reset, Defender, Firewall |
+| 27-33 | **System**: Info, Health, Services, Startup, Battery, SMART, Memory |
+| 34-35 | **Report**: Generate, Run All |
 
-### Option C: Using the Batch Files
+### Windows — Other Scripts
 
-- Double-click `run.cmd` (runs local script)
-- Double-click `run-online.cmd` (runs from GitHub)
+| Script | Quick Start |
+|--------|-------------|
+| `Maddix-RegistryTool.ps1` | `irm .../Registry/Maddix-RegistryTool.ps1 \| iex` |
+| `Maddix-NetworkPro.ps1` | `irm .../Network/Maddix-NetworkPro.ps1 \| iex` |
+| `Maddix-SystemCleaner.ps1` | `irm .../Cleaner/Maddix-SystemCleaner.ps1 \| iex` |
+| `Maddix-SecurityAudit.ps1` | `irm .../Security/Maddix-SecurityAudit.ps1 \| iex` |
+| `Maddix-PerformanceTuner.ps1` | `irm .../Optimization/Maddix-PerformanceTuner.ps1 \| iex` |
+| `Maddix-DockerSetup.ps1` | `irm .../Docker/Maddix-DockerSetup.ps1 \| iex` |
+| `Backup-Restore.ps1` | `irm .../Backup-Restore.ps1 \| iex` |
 
----
+### Linux — SysAdminSuite.sh (19 Options)
 
-## Menu Options Explained
+| # | Operation |
+|---|-----------|
+| 1-5 | **Repair**: Package Manager, Broken Packages, GRUB, Filesystem, Systemd |
+| 6-7 | **Network**: Diagnostic, DNS |
+| 8-11 | **Cleanup/Optimize**: System Clean, Journal, Swappiness, Kernel Params |
+| 12-14 | **Backup/Restore**: Package List, Configs, Restore Packages |
+| 15-17 | **Security/Health**: Audit, Health, System Info |
+| 18-19 | **General**: Run All, Version |
 
-### 1. Create System Restore Point
-Creates a Windows restore point so you can revert changes if needed.
+### Linux — Other Scripts
 
-### 2. Run Full Diagnostic
-Executes SFC, DISM, CHKDSK, and analyzes Event Logs for critical errors.
+| Script | Purpose |
+|--------|---------|
+| `maddix-iptables.sh` | Firewall profiles (client/server), NAT, port/rate management |
+| `maddix-devsetup.sh` | Install dev tools by category (editors, languages, DBs, docker, cloud) |
+| `maddix-docker.sh` | Docker install, containers, images, compose, system prune |
+| `maddix-hardener.sh` | SSH hardening, kernel sysctl, firewall, ClamAV, rootkit scan |
 
-### 3. Repair System Files (SFC)
-Scans all protected system files and replaces corrupted versions.
+## Locations
 
-### 4. Repair System Image (DISM)
-Repairs the Windows system image using Windows Update.
-
-### 5. Check Disk (CHKDSK)
-Scans the system drive for file system errors and bad sectors.
-
-### 6. Repair Boot Records
-Fixes MBR (Master Boot Record), BCD (Boot Configuration Data), and rebuilds boot entries.
-
-### 7. Reset Windows Update
-Stops WU services, clears the SoftwareDistribution cache, and restarts services.
-
-### 8-10. Driver Management
-List all installed drivers, scan for updates, and remove problematic ones.
-
-### 11. Clean System Caches
-Clears temp files, prefetch, logs, DNS cache, and Windows Update cache.
-
-### 12. Performance Optimization
-Disables visual effects, Xbox services, reduces service timeout, sets High Performance power plan.
-
-### 13. Generate Report
-Creates HTML and TXT diagnostic reports on your desktop.
-
-### 14. Run All
-Executes every repair and optimization in sequence (recommended for full maintenance).
-
----
-
-## Reports
-
-After running diagnostics, reports are saved to:
-```
-%USERPROFILE%\Desktop\MaddixSuite_Report_YYYYMMDD_HHmmss\
-├── Report.txt
-└── Report.html
-```
-
-Open `Report.html` in any browser for colored, formatted results.
+- **Reports**: `%USERPROFILE%\Desktop\MaddixSuite\Reports\`
+- **Backups**: `%USERPROFILE%\Desktop\MaddixSuite\Backups\`
+- **Linux logs**: `~/MaddixSuite/Reports/`
