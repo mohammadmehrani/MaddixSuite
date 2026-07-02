@@ -17,38 +17,51 @@ jobs:
       - name: Install Pester
         shell: powershell
         run: |
-          $provider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
-          if (-not $provider) {
-            Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
-          }
+          Install-PackageProvider -Name NuGet -Force -Scope CurrentUser -ErrorAction Stop
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+          Install-Module Pester -RequiredVersion 5.5.0 -Force -SkipPublisherCheck -Scope CurrentUser
       - name: Install PSScriptAnalyzer
         shell: powershell
         run: |
-          $provider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
-          if (-not $provider) {
-            Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
-          }
+          Install-PackageProvider -Name NuGet -Force -Scope CurrentUser -ErrorAction Stop
           Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -AllowClobber
       - name: Lint with PSScriptAnalyzer
+        shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path windows/ -Recurse `
-            -Settings PSScriptAnalyzerSettings.psd1
+          $results = Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          $errors = $results | Where-Object Severity -eq 'Error'
+          if ($errors.Count -gt 0) { $errors | Format-Table; exit 1 }
       - name: Run Pester Tests
         shell: pwsh
         run: |
-          Import-Module Pester -PassThru
-          Invoke-Pester -Path tests/windows/ -Output Detailed -PassThru
+Import-Module Pester -PassThru
+$config = New-PesterConfiguration -Hashtable @{
+  Run = @{
+    Path = @('tests/windows/')
+    Exit = $true
+    PassThru = $true
+  }
+  Output = @{
+    Verbosity = 'Detailed'
+    CIFormat = 'Auto'
+  }
+  TestResult = @{
+    Enabled = $true
+    OutputFormat = 'NUnitXml'
+    OutputPath = 'tests/windows/test-results.xml'
+  }
+}
+$r = Invoke-Pester -Configuration $config
+if ($r.FailedCount -gt 0) { exit 1 }
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results-windows
-          path: tests/windows/*.xml
+          path: tests/windows/test-results.xml
       - uses: dorny/test-reporter@v1
         if: always()
         with:
           name: PowerShell Tests
-          path: tests/windows/*.xml
+          path: tests/windows/test-results.xml
           reporter: java-junit

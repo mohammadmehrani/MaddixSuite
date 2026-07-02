@@ -10,15 +10,17 @@ Describe "Maddix-AntiHack" {
             { . "$PSScriptRoot/../../windows/Security/Maddix-AntiHack.ps1" } | Should -Not -Throw
         }
 
-        It "Should define all module functions" {
+        It "Should define all security scanner functions" {
             . "$PSScriptRoot/../../windows/Security/Maddix-AntiHack.ps1"
-            $modules = @(
-                "Invoke-Module1", "Invoke-Module2", "Invoke-Module3",
-                "Invoke-Module4", "Invoke-Module5", "Invoke-Module6",
-                "Show-Report", "Invoke-Cleanup", "Start-AntiHackScan"
+            $expected = @(
+                "Confirm-Step", "Test-Admin", "Add-Finding",
+                "Scan-NetworkAttacks", "Scan-Keyloggers",
+                "Scan-Persistence", "Scan-ProcessMemory",
+                "Scan-BrowserCreds", "Scan-FirewallExploits",
+                "Show-Report", "Invoke-Cleanup"
             )
-            foreach ($m in $modules) {
-                (Get-Command $m -ErrorAction SilentlyContinue) | Should -Not -BeNullOrEmpty
+            foreach ($f in $expected) {
+                (Get-Command $f -ErrorAction SilentlyContinue) | Should -Not -BeNullOrEmpty
             }
         }
     }

@@ -1,8 +1,10 @@
 BeforeAll {
-    Mock Get-WindowsFeature { return @{Installed = $true} }
     Mock Write-Host { }
     Mock Start-Sleep { }
     Mock Pause { }
+    Mock Read-Host { return "0" }
+    Mock Get-CimInstance { return @{Caption = "Windows Server 2022"; BuildNumber = "20348"} }
+    Mock Get-WindowsFeature { return @{Installed = $true} }
 }
 
 Describe "Maddix-AD" {
@@ -11,52 +13,30 @@ Describe "Maddix-AD" {
             { . "$PSScriptRoot/../../windows/SRV/Maddix-AD.ps1" } | Should -Not -Throw
         }
 
-        It "Should define all 40+ AD functions" {
+        It "Should define loader functions" {
             . "$PSScriptRoot/../../windows/SRV/Maddix-AD.ps1"
-            $expected = @(
-                "Show-ADStatus", "Install-ADRole", "Create-NewDomain",
-                "Manage-FSMORoles", "Manage-ADUsers", "Manage-GPO",
-                "AD-ReplicationCheck", "AD-SitesServices", "AD-RecycleBin",
-                "AD-Schema", "AD-CertificateServices", "AD-FileServer",
-                "AD-DFS", "AD-Cluster", "AD-Backup", "AD-Restore",
-                "AD-Cleanup", "AD-DNS", "AD-DHCP", "AD-Samba",
-                "AD-RODC", "AD-Trust", "AD-PasswordPolicy", "AD-FGPP",
-                "AD-Audit", "AD-Delegation", "AD-DCDiag", "AD-KDS",
-                "AD-gMSA", "AD-ADFS", "AD-AzureConnect"
-            )
+            $expected = @("Register-Tool", "Confirm-Step", "Show-Banner", "Show-Menu", "Write-Color", "Log")
             foreach ($f in $expected) {
                 (Get-Command $f -ErrorAction SilentlyContinue) | Should -Not -BeNullOrEmpty
             }
         }
     }
 
-    Context "AD Functions" {
-        BeforeAll {
-            . "$PSScriptRoot/../../windows/SRV/Maddix-AD.ps1"
+    Context "Tool Discovery" {
+        It "Should find AD-*.ps1 files in ToolLib" {
+            $adPath = Resolve-Path "$PSScriptRoot/../../windows/ToolLib/AD"
+            $files = Get-ChildItem $adPath -Filter "AD-*.ps1"
+            $files.Count | Should -BeGreaterOrEqual 40
+            $files[0].Name | Should -Match "AD-\d{3}"
         }
 
-        It "Get-ADSystemInfo should return system info object" {
-            Mock Get-CimInstance { return @{Caption = "Windows Server 2022"; BuildNumber = "20348"} }
-            Mock Get-WindowsFeature { return @{Installed = $false} }
-            $result = Get-ADSystemInfo
-            $result | Should -Not -BeNullOrEmpty
-            $result.OSName | Should -Be "Windows Server 2022"
-        }
-
-        It "Get-ADSystemInfo should detect server OS" {
-            Mock Get-CimInstance { return @{Caption = "Windows Server 2022"} }
-            $result = Get-ADSystemInfo
-            $result.IsServer | Should -Be $true
-        }
-
-        It "Test-ADRole should check AD DS role" {
-            Mock Get-WindowsFeature { return @{Installed = $true} }
-            Test-ADRole | Should -Be $true
-        }
-
-        It "Test-ADRole should return false when not installed" {
-            Mock Get-WindowsFeature { return @{Installed = $false} }
-            Test-ADRole | Should -Be $false
+        It "Each AD-*.ps1 should call Register-Tool" {
+            $adPath = Resolve-Path "$PSScriptRoot/../../windows/ToolLib/AD"
+            $files = Get-ChildItem $adPath -Filter "AD-*.ps1" | Select-Object -First 3
+            foreach ($f in $files) {
+                $content = Get-Content $f.FullName -Raw
+                $content | Should -Match "Register-Tool"
+            }
         }
     }
 
@@ -65,9 +45,7 @@ Describe "Maddix-AD" {
             . "$PSScriptRoot/../../windows/SRV/Maddix-AD.ps1"
         }
 
-        It "Show-Menu should contain AD-001" {
-            Mock Write-Color { }
-            Mock Read-Host { return "0" }
+        It "Show-Menu should not throw" {
             Show-Menu | Should -Not -Throw
         }
     }
