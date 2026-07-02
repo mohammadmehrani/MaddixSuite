@@ -2,6 +2,7 @@ BeforeAll {
     $script:ToolLibPath = "$PSScriptRoot/../../../../windows/ToolLib/SYS"
     $script:ToolInfo = $null
     function Register-Tool { param($Config) $script:TestTool = $Config }
+    Mock Checkpoint-Computer { return $null }
 }
 
 Describe "SYS-002" {
