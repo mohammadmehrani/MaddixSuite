@@ -1,8 +1,14 @@
 # MaddixSuite
 
-**Created by Mohammad Mehrani (Maddix)** · [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE) [![PowerShell](https://img.shields.io/badge/PowerShell-3%2B-5391FE?style=flat-square&logo=PowerShell)](windows) [![Linux](https://img.shields.io/badge/Linux-Debian%2FRHEL%2FArch-E95420?style=flat-square&logo=Linux)](linux) [![فارسی](https://img.shields.io/badge/📖-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-1a73e8?style=flat-square)](README.fa.md)
+**Created by Mohammad Mehrani (Maddix)** · [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?style=flat-square&logo=PowerShell)](windows)
+[![Bash](https://img.shields.io/badge/Bash-4%2B-4EAA25?style=flat-square&logo=GNU-Bash)](linux)
+[![Windows CI](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/test-windows.yml?label=Windows&logo=windows)](https://github.com/mohammadmehrani/MaddixSuite/actions)
+[![Linux CI](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/test-linux.yml?label=Linux&logo=linux)](https://github.com/mohammadmehrani/MaddixSuite/actions)
+[![Lint](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/lint.yml?label=Lint)](https://github.com/mohammadmehrani/MaddixSuite/actions)
+[![فارسی](https://img.shields.io/badge/📖-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-1a73e8?style=flat-square)](README.fa.md)
 
-> 🛠️ Cross-platform system administration toolkit — diagnostic, repair, backup, security, optimization for **Windows** and **Linux**.
+> 🛠️ Cross-platform system administration toolkit — 300+ ID-based tools, diagnostic, repair, backup, security, optimization for **Windows** and **Linux**.
 > 📖 [**Wiki & User Guide** →](wiki/Home.md)
 
 ---
@@ -11,69 +17,46 @@
 
 | Platform | Command |
 |----------|---------|
-| **Windows PowerShell** | `irm https://git.io/... \| iex` |
-| **Linux Bash** | `bash <(curl -s https://git.io/...)` |
+| **Windows PowerShell** | `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/MaddixSuite.ps1 \| iex` |
+| **Linux Bash** | `bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/MaddixSuite.sh)` |
 
-### Windows (PowerShell)
-```powershell
-irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex
-```
+---
 
-### Linux (Bash)
-```bash
-bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/SysAdminSuite.sh)
-```
+## 📊 CI/CD Status
+
+| Workflow | Status |
+|----------|--------|
+| **Windows Tests** (Pester) | [![Windows CI](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/test-windows.yml?label=Windows%20Tests)](https://github.com/mohammadmehrani/MaddixSuite/actions/workflows/test-windows.yml) |
+| **Linux Tests** (BATS) | [![Linux CI](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/test-linux.yml?label=Linux%20Tests)](https://github.com/mohammadmehrani/MaddixSuite/actions/workflows/test-linux.yml) |
+| **Lint** (PSScriptAnalyzer + ShellCheck) | [![Lint](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/lint.yml?label=Lint)](https://github.com/mohammadmehrani/MaddixSuite/actions/workflows/lint.yml) |
+| **Security** (Trivy + Gitleaks) | [![Security](https://img.shields.io/github/actions/workflow/status/mohammadmehrani/MaddixSuite/security.yml?label=Security)](https://github.com/mohammadmehrani/MaddixSuite/actions/workflows/security.yml) |
 
 ---
 
 ## 📦 Script Catalog
 
-### 🪟 Windows (8 scripts)
+### 🪟 Windows — 200+ ID-based tools
 
-| Category | Script | Features |
-|----------|--------|----------|
-| **Main** | [`SysAdminSuite.ps1`](windows/SysAdminSuite.ps1) | 35 options: diagnostic, repair, backup, network, security, optimization |
-| **CMD** | [`SysAdminSuite.cmd`](windows/SysAdminSuite.cmd) | 18 essential tools in CMD batch |
-| **Backup** | [`Backup-Restore.ps1`](windows/Backup-Restore.ps1) | Full system state backup & restore |
-| **Registry** | [`Maddix-RegistryTool.ps1`](windows/Registry/Maddix-RegistryTool.ps1) | Backup, restore, clean, optimize, search |
-| **Network** | [`Maddix-NetworkPro.ps1`](windows/Network/Maddix-NetworkPro.ps1) | Diagnostics, WiFi, DNS changer, speed test |
-| **Cleaner** | [`Maddix-SystemCleaner.ps1`](windows/Cleaner/Maddix-SystemCleaner.ps1) | Deep clean: temp, browser, logs, duplicates |
-| **Security** | [`Maddix-SecurityAudit.ps1`](windows/Security/Maddix-SecurityAudit.ps1) | Port scan, firewall, user audit, Defender |
-| **Optimization** | [`Maddix-PerformanceTuner.ps1`](windows/Optimization/Maddix-PerformanceTuner.ps1) | CPU, RAM, disk, GPU, startup, network tuning |
-| **Docker** | [`Maddix-DockerSetup.ps1`](windows/Docker/Maddix-DockerSetup.ps1) | Install, manage, configure Docker Desktop |
+| Category | Prefix | Description | Tools |
+|----------|--------|-------------|-------|
+| **Main Framework** | [`MaddixSuite.ps1`](windows/MaddixSuite.ps1) | ID-based tool loader with paginated UI, filtering, confirmation | 300+ slot |
+| **System Tools** | `SYS-` | Disk health, processes, services, updates, event logs, USB, boot | 12+ |
+| **Network Tools** | `NET-` | Diagnostics, WiFi, DNS, firewall, ports, VPN, bandwidth | 25+ |
+| **Security Tools** | `SEC-` | Defender, firewall audit, BitLocker, anti-hack, ransomware check | 20+ |
+| **Cleaner Tools** | `CLN-` | Temp files, browser cache, logs, dups, disk cleanup | 10+ |
+| **Optimization** | `OPT-` | CPU, RAM, disk, startup, power, visual effects, network tuning | 10+ |
+| **Backup Tools** | `BAK-` | System state, registry, files, scheduled backup, cloud upload | 10+ |
+| **Dev Tools** | `DEV-` | Docker, WSL2, Git, Node, Python, VS Code, PowerShell 7 | 10+ |
+| **Server Tools** | `SRV-` | Hyper-V, IIS, WSUS, RDP, Storage Spaces, Server Backup | 10+ |
+| **Active Directory** | `AD-` | Domains, GPO, replication, FSMO, DNS, DHCP, certs, LAPS | 60+ |
+| **Specialized** | Separate | SafeDiag, BSODFix, AntiHack, Backup-Restore, RegistryTool | 8 |
 
-### 🐧 Linux (5 scripts)
+### 🐧 Linux — 50+ ID-based tools
 
-| Category | Script | Features |
-|----------|--------|----------|
-| **Main** | [`SysAdminSuite.sh`](linux/SysAdminSuite.sh) | 19 options: repair, network, clean, backup, security |
-| **Firewall** | [`maddix-iptables.sh`](linux/firewall/maddix-iptables.sh) | Client/server profiles, NAT, rate limit, port scan |
-| **DevTools** | [`maddix-devsetup.sh`](linux/devtools/maddix-devsetup.sh) | Install editors, languages, DBs, docker, cloud CLIs |
-| **Docker** | [`maddix-docker.sh`](linux/docker/maddix-docker.sh) | Install, containers, images, compose, system prune |
-| **Security** | [`maddix-hardener.sh`](linux/security/maddix-hardener.sh) | SSH harden, kernel sysctl, firewall, rootkit scan |
-
----
-
-## 📁 Structure
-
-```
-MaddixSuite/
-├── README.md / README.fa.md
-├── windows/
-│   ├── SysAdminSuite.ps1           # main toolkit
-│   ├── Registry/                   # Maddix-RegistryTool.ps1
-│   ├── Network/                    # Maddix-NetworkPro.ps1
-│   ├── Cleaner/                    # Maddix-SystemCleaner.ps1
-│   ├── Security/                   # Maddix-SecurityAudit.ps1
-│   ├── Optimization/               # Maddix-PerformanceTuner.ps1
-│   └── Docker/                     # Maddix-DockerSetup.ps1
-└── linux/
-    ├── SysAdminSuite.sh            # main toolkit
-    ├── firewall/                   # maddix-iptables.sh
-    ├── devtools/                   # maddix-devsetup.sh
-    ├── docker/                     # maddix-docker.sh
-    └── security/                   # maddix-hardener.sh
-```
+| Category | Prefix | Description | Tools |
+|----------|--------|-------------|-------|
+| **Main Framework** | [`MaddixSuite.sh`](linux/MaddixSuite.sh) | ID-based tool loader, cross-distro support | 50+ |
+| **Specialized** | Separate | AntiHack, Hardener, Firewall, DevSetup, Docker | 5 |
 
 ---
 
@@ -81,8 +64,34 @@ MaddixSuite/
 
 | Platform | Requirements |
 |----------|-------------|
-| **Windows** | PowerShell 3+ · Windows 7/8/10/11/Server · **Run as Admin** |
-| **Linux**  | bash · curl · sudo (some features) · Any major distro |
+| **Windows** | PowerShell 5.1+ · Windows 10/11/Server 2016+ · **Run as Admin** |
+| **Linux**  | bash 4+ · curl · sudo (some features) · Any major distro |
+
+---
+
+## 🧪 Test Structure
+
+```
+tests/
+├── windows/                         Pester v5 tests
+│   ├── MaddixSuite.Tests.ps1        Framework tests
+│   ├── SafeDiag.Tests.ps1           Diagnostic tests
+│   ├── Maddix-AD.Tests.ps1          AD management tests
+│   ├── Maddix-AntiHack.Tests.ps1    Security scanner tests
+│   ├── Maddix-Mystery.Tests.ps1     Game tests
+│   ├── Backup-Restore.Tests.ps1     Backup tests
+│   ├── ToolLib/SYS/                 Individual tool tests
+│   ├── ToolLib/AD/                  AD tool tests
+│   └── helpers/                     Test helpers and mock data
+└── linux/                           BATS tests
+    ├── MaddixSuite.Tests.bats       Framework tests
+    ├── maddix-antihack.Tests.bats   Anti-hack tests
+    ├── maddix-hardener.Tests.bats   Hardener tests
+    ├── maddix-iptables.Tests.bats   Firewall tests
+    ├── maddix-docker.Tests.bats     Docker tests
+    ├── maddix-devsetup.Tests.bats   Dev setup tests
+    └── helpers/                     Test helpers
+```
 
 ---
 
@@ -92,4 +101,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-<p align="center"><strong>github.com/mohammadmehrani/MaddixSuite</strong></p>
+<p align="center"><strong>github.com/mohammadmehrani/MaddixSuite</strong> · <strong>https://iodeck.ir</strong></p>

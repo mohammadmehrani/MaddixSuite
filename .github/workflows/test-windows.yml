@@ -1,0 +1,39 @@
+name: Test Windows (PowerShell)
+on:
+  push:
+    branches: [main]
+    paths: ['windows/**', 'tests/windows/**']
+  pull_request:
+    branches: [main]
+    paths: ['windows/**', 'tests/windows/**']
+
+jobs:
+  test:
+    name: Pester Tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pester
+        run: Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+      - name: Install PSScriptAnalyzer
+        run: Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+      - name: Lint with PSScriptAnalyzer
+        run: |
+          Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+      - name: Run Pester Tests
+        shell: pwsh
+        run: |
+          Import-Module Pester -PassThru
+          Invoke-Pester -Path tests/windows/ -Output Detailed -PassThru
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-windows
+          path: tests/windows/*.xml
+      - uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: PowerShell Tests
+          path: tests/windows/*.xml
+          reporter: java-junit

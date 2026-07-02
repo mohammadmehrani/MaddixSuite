@@ -1,0 +1,21 @@
+# ShellCheck configuration for MaddixSuite
+# https://www.shellcheck.net/wiki/
+
+# Enable all checks
+enable=all
+
+# Disable noisy or irrelevant checks
+disable=SC1090  # Can't follow non-constant source
+disable=SC1091  # Not following sourced file
+disable=SC2034  # Unused variable (color codes)
+disable=SC2154  # Variable referenced but not assigned (dynamic)
+disable=SC2086  # Double quote to prevent globbing (intentional in some cases)
+disable=SC2002  # Useless cat (stylistic)
+disable=SC2155  # Declare and assign separately
+disable=SC2181  # Check exit code directly
+
+# Source path hints
+source-path=SCRIPTDIR
+
+# Shell dialect
+shell=bash

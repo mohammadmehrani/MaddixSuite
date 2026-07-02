@@ -4,15 +4,21 @@
 # ============================================================================
 #!/bin/bash
 # =========================================================
-# SysAdminSuite v2.0 - Linux Edition
+# SysAdminSuite v2.0 - Linux Edition LEGACY
 # Part of MaddixSuite by Mohammad Mehrani (Maddix)
 # https://github.com/mohammadmehrani/MaddixSuite
 #
-# Run directly from GitHub:
-#   bash <(curl -s https://raw.githubusercontent.com/maddix/MaddixSuite/main/linux/SysAdminSuite.sh)
+# ╔══════════════════════════════════════════════════════╗
+# ║  NOTICE: This script is legacy/deprecated.          ║
+# ║  Use the new unified launcher instead:              ║
+# ║    ./MaddixSuite.sh                                 ║
+# ║  Or run directly from GitHub:                       ║
+# ║    bash <(curl -s https://raw.githubusercontent.com/ ║
+# ║      mohammadmehrani/MaddixSuite/main/linux/        ║
+# ║      MaddixSuite.sh)                                ║
+# ╚══════════════════════════════════════════════════════╝
 # =========================================================
 
-set -e
 
 # Colors
 CYAN='\033[0;96m'
@@ -701,5 +707,7 @@ main() {
     done
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 

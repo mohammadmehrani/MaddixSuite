@@ -15,6 +15,10 @@
     Part of MaddixSuite: https://github.com/mohammadmehrani/MaddixSuite
     One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/Docker/Maddix-DockerSetup.ps1 | iex
 #>
+param(
+    [switch]$Auto,
+    [switch]$DryRun
+)
 
 function Show-Banner {
     Clear-Host
@@ -242,5 +246,8 @@ function Main {
     }
 }
 
-Main
+if ($MyInvocation.InvocationName -ne '.') {
+    Main
+}
+
 

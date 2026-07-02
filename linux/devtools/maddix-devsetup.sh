@@ -10,7 +10,7 @@
 # https://github.com/mohammadmehrani/MaddixSuite
 # =========================================================
 
-set -e
+# set -e (removed for testability)
 CYAN='\033[0;96m'; GREEN='\033[0;92m'; YELLOW='\033[0;93m'; RED='\033[0;91m'; MAGENTA='\033[0;95m'; GRAY='\033[0;90m'; RESET='\033[0m'
 
 [[ $EUID -eq 0 ]] || { echo -e "${RED}Run with sudo.${RESET}"; exit 1; }
@@ -125,5 +125,7 @@ main() {
     done
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 

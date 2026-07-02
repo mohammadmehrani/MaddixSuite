@@ -1,0 +1,43 @@
+name: Lint
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-pwsh:
+    name: PowerShell ScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PSScriptAnalyzer
+        run: Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+      - name: Run Analysis
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          if ($results) { $results | Format-Table; exit 1 }
+      - name: Run Analysis (Warning only)
+        run: |
+          Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1 -Severity Warning
+
+  lint-sh:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: ./linux
+          severity: warning
+
+  lint-yaml:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check YAML formatting
+        run: |
+          sudo apt-get install -y yamllint
+          yamllint .github/workflows/

@@ -513,15 +513,18 @@ Path: C:\Windows\System32\drivers\iaStorAC.sys
     }
 }
 
-# ===========================================================================
-# MAIN
-# ===========================================================================
-Test-Admin
-Phase0-SystemInfo
-Phase1-EventLogAnalysis
-Phase2-iaStorACDiagnostic
-Phase3-iaStorACRepair
-Phase4-SystemFileRepair
-Phase5-SystemCleanup
-Phase6-Final
+function Invoke-BSODFix {
+    Test-Admin
+    Phase0-SystemInfo
+    Phase1-EventLogAnalysis
+    Phase2-iaStorACDiagnostic
+    Phase3-iaStorACRepair
+    Phase4-SystemFileRepair
+    Phase5-SystemCleanup
+    Phase6-Final
+}
+
+if ($MyInvocation.InvocationName -ne '.') {
+    Invoke-BSODFix
+}
 

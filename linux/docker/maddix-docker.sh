@@ -11,7 +11,7 @@
 # Run: bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/docker/maddix-docker.sh)
 # =========================================================
 
-set -e
+# set -e (removed for testability)
 
 CYAN='\033[0;96m'; GREEN='\033[0;92m'; YELLOW='\033[0;93m'; RED='\033[0;91m'; MAGENTA='\033[0;95m'; GRAY='\033[0;90m'; RESET='\033[0m'
 
@@ -236,5 +236,7 @@ main() {
     done
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 

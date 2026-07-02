@@ -15,6 +15,10 @@
     Part of MaddixSuite: https://github.com/mohammadmehrani/MaddixSuite
     One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/Registry/Maddix-RegistryTool.ps1 | iex
 #>
+param(
+    [switch]$Auto,
+    [switch]$DryRun
+)
 
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "ERROR: Administrator privileges required." -ForegroundColor Red
@@ -453,5 +457,7 @@ function Main {
     }
 }
 
-Main
+if ($MyInvocation.InvocationName -ne '.') {
+    Main
+}
 

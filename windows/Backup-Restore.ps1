@@ -453,4 +453,10 @@ function Show-Menu {
     }
 }
 
-while ($true) { Show-Menu }
+function Invoke-BackupRestore {
+    while ($true) { Show-Menu }
+}
+
+if ($MyInvocation.InvocationName -ne '.') {
+    Invoke-BackupRestore
+}

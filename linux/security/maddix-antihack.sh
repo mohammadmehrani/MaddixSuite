@@ -502,40 +502,43 @@ show_report() {
     echo -e "  ${YELLOW}Run with sudo for full detection capability.${NC}"
 }
 
-# ===========================================================================
-# MAIN
-# ===========================================================================
-clear
-echo -e "${CYAN}╔═══════════════════════════════════════════════════════════╗${NC}"
-echo -e "${CYAN}║       MaddixSuite — Advanced Anti-Hack Scanner            ║${NC}"
-echo -e "${CYAN}╚═══════════════════════════════════════════════════════════╝${NC}"
-echo -e "  ${GRAY}GitHub: https://github.com/mohammadmehrani/MaddixSuite${NC}"
-echo -e "  ${GRAY}Website: https://iodeck.ir${NC}"
-echo -e "  ${GRAY}Detecting: Rootkits, Keyloggers, Backdoors, Network Attacks, Exploits${NC}"
-echo ""
-
-detect_distro
-
-echo ""
-echo -e "  ${YELLOW}The following modules will be executed:${NC}"
-echo -e "  ${GRAY}  1. Rootkit Detection (chkrootkit, rkhunter, kernel modules)${NC}"
-echo -e "  ${GRAY}  2. Keylogger Detection (processes, kernel modules, input devices)${NC}"
-echo -e "  ${GRAY}  3. Backdoor & Persistence (cron, SSH, systemd, shell config)${NC}"
-echo -e "  ${GRAY}  4. Network Attack (listeners, ARP, promiscuous, DNS, firewall)${NC}"
-echo -e "  ${GRAY}  5. Process & Memory (malicious names, reverse shells, LD_PRELOAD)${NC}"
-echo -e "  ${GRAY}  6. File Integrity (sensitive files, permissions, kernel logs)${NC}"
-echo ""
-if confirm; then
+main() {
+    clear
+    echo -e "${CYAN}╔═══════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${CYAN}║       MaddixSuite — Advanced Anti-Hack Scanner            ║${NC}"
+    echo -e "${CYAN}╚═══════════════════════════════════════════════════════════╝${NC}"
+    echo -e "  ${GRAY}GitHub: https://github.com/mohammadmehrani/MaddixSuite${NC}"
+    echo -e "  ${GRAY}Website: https://iodeck.ir${NC}"
+    echo -e "  ${GRAY}Detecting: Rootkits, Keyloggers, Backdoors, Network Attacks, Exploits${NC}"
     echo ""
-    scan_rootkits
-    scan_keyloggers
-    scan_backdoors
-    scan_network
-    scan_processes
-    scan_files
-    show_report
-else
-    echo -e "  ${YELLOW}Scan cancelled.${NC}"
-fi
 
-echo -e "\n  ${GRAY}Scan complete. Visit https://iodeck.ir for more tools.${NC}"
+    detect_distro
+
+    echo ""
+    echo -e "  ${YELLOW}The following modules will be executed:${NC}"
+    echo -e "  ${GRAY}  1. Rootkit Detection (chkrootkit, rkhunter, kernel modules)${NC}"
+    echo -e "  ${GRAY}  2. Keylogger Detection (processes, kernel modules, input devices)${NC}"
+    echo -e "  ${GRAY}  3. Backdoor & Persistence (cron, SSH, systemd, shell config)${NC}"
+    echo -e "  ${GRAY}  4. Network Attack (listeners, ARP, promiscuous, DNS, firewall)${NC}"
+    echo -e "  ${GRAY}  5. Process & Memory (malicious names, reverse shells, LD_PRELOAD)${NC}"
+    echo -e "  ${GRAY}  6. File Integrity (sensitive files, permissions, kernel logs)${NC}"
+    echo ""
+    if confirm; then
+        echo ""
+        scan_rootkits
+        scan_keyloggers
+        scan_backdoors
+        scan_network
+        scan_processes
+        scan_files
+        show_report
+    else
+        echo -e "  ${YELLOW}Scan cancelled.${NC}"
+    fi
+
+    echo -e "\n  ${GRAY}Scan complete. Visit https://iodeck.ir for more tools.${NC}"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi

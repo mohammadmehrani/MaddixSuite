@@ -225,24 +225,27 @@ export LANG=fa_IR.UTF-8
     Write-Color "  [+] Linux Persian Terminal setup complete" "Green"
 }
 
-# ===========================================================================
-# MAIN
-# ===========================================================================
-Clear-Host
-Write-Color "╔═══════════════════════════════════════════════════════════╗" "Cyan"
-Write-Color "║      MaddixSuite — Persian Terminal Encoding Fix          ║" "Cyan"
-Write-Color "╚═══════════════════════════════════════════════════════════╝" "Cyan"
-Write-Color "  GitHub: https://github.com/mohammadmehrani/MaddixSuite" "DarkGray"
-Write-Color "  Website: https://iodeck.ir" "DarkGray"
-Write-Color ""
+function Invoke-PersianTerminalFix {
+    Clear-Host
+    Write-Color "╔═══════════════════════════════════════════════════════════╗" "Cyan"
+    Write-Color "║      MaddixSuite — Persian Terminal Encoding Fix          ║" "Cyan"
+    Write-Color "╚═══════════════════════════════════════════════════════════╝" "Cyan"
+    Write-Color "  GitHub: https://github.com/mohammadmehrani/MaddixSuite" "DarkGray"
+    Write-Color "  Website: https://iodeck.ir" "DarkGray"
+    Write-Color ""
 
-if ($LinuxMode -or $IsLinux -or (-not $IsWindows -and [Environment]::OSVersion.Platform -eq [PlatformID]::Unix)) {
-    Fix-LinuxTerminal
-} elseif ($IsWindows -or [Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
-    Test-Admin
-    Fix-WindowsTerminal
-} else {
-    Write-Color "  [!] Unsupported platform" "Red"
+    if ($LinuxMode -or $IsLinux -or (-not $IsWindows -and [Environment]::OSVersion.Platform -eq [PlatformID]::Unix)) {
+        Fix-LinuxTerminal
+    } elseif ($IsWindows -or [Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
+        Test-Admin
+        Fix-WindowsTerminal
+    } else {
+        Write-Color "  [!] Unsupported platform" "Red"
+    }
+
+    Write-Color "`n  Done. Visit https://iodeck.ir for more tools." "DarkGray"
 }
 
-Write-Color "`n  Done. Visit https://iodeck.ir for more tools." "DarkGray"
+if ($MyInvocation.InvocationName -ne '.') {
+    Invoke-PersianTerminalFix
+}

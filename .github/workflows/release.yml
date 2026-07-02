@@ -1,0 +1,49 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check version tag consistency
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "Version: $VERSION"
+          grep -r "SCRIPT_VERSION.*$VERSION" linux/MaddixSuite.sh || echo "Linux version not found"
+      - name: Generate SHA256 Checksums
+        run: |
+          find . -type f \( -name '*.ps1' -o -name '*.sh' \) | sort | while IFS= read -r f; do
+            sha256sum "$f" >> checksums.txt
+          done
+          cat checksums.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: checksums
+          path: checksums.txt
+
+  release:
+    name: Create Release
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Changelog
+        run: |
+          git log --oneline --no-decorate $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD > changelog.txt
+          echo "Release $GITHUB_REF_NAME" > release_notes.md
+          echo "---" >> release_notes.md
+          cat changelog.txt >> release_notes.md
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.md
+          files: |
+            windows/MaddixSuite.ps1
+            linux/MaddixSuite.sh
+            checksums.txt

@@ -15,6 +15,11 @@
     Part of MaddixSuite: https://github.com/mohammadmehrani/MaddixSuite
     One-liner: irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/SafeDiag.ps1 | iex
 #>
+param(
+    [switch]$Auto,
+    [switch]$ReportOnly,
+    [switch]$Fix
+)
 
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "ERROR: Administrator privileges required." -ForegroundColor Red
@@ -578,27 +583,44 @@ pre { background:#0d1117; padding:15px; border-radius:8px; overflow:auto; margin
     Start-Process $script:ReportPath
 }
 
-# ═══════════════════════════════════════════════════════════════
-#  MAIN
-# ═══════════════════════════════════════════════════════════════
+#region INVOKE
+function Invoke-SafeDiag {
+    Show-Banner
+    Write-Host "  Starting automatic diagnostic..." -ForegroundColor Green
 
-Show-Banner
-Write-Host "  Starting automatic diagnostic..." -ForegroundColor Green
+    if (-not $ReportOnly) {
+        Phase1-Diagnostic
+        Phase2-Report
 
-Phase1-Diagnostic
-Phase2-Report
+        if ($script:Issues.Count -gt 0) {
+            Write-Host ""
+            Write-Host "  The diagnostic is complete." -ForegroundColor Cyan
+            Write-Host "  Report saved to: $script:ReportPath" -ForegroundColor Yellow
+            Write-Host ""
 
-if ($script:Issues.Count -gt 0) {
-    Write-Host ""
-    Write-Host "  The diagnostic is complete." -ForegroundColor Cyan
+            if ($Fix) {
+                $confirm = if ($Auto) { $true } else {
+                    Write-Host "  Apply all suggested fixes?" -ForegroundColor Yellow -NoNewline
+                    Write-Host " (Y/N)" -ForegroundColor Yellow
+                    (Read-Host ">") -match '^[Yy]'
+                }
+                if ($confirm) { Phase3-Fixes; Phase4-Optimizations }
+            } else {
+                Write-Host "  To apply fixes, re-run with: -Fix" -ForegroundColor Cyan
+                Write-Host "  Or open the HTML report and review manually." -ForegroundColor Cyan
+            }
+        } else {
+            Write-Host "  No issues found. Your system looks healthy!" -ForegroundColor Green
+        }
+    }
+
+    Phase5-Report
     Write-Host "  Report saved to: $script:ReportPath" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  To apply fixes, re-run with: -Fix" -ForegroundColor Cyan
-    Write-Host "  Or open the HTML report and review manually." -ForegroundColor Cyan
-} else {
-    Write-Host "  No issues found. Your system looks healthy!" -ForegroundColor Green
 }
+#endregion
 
-Phase5-Report
-Write-Host "  Report saved to: $script:ReportPath" -ForegroundColor Yellow
+# Source-safe entry point
+if ($MyInvocation.InvocationName -ne '.') {
+    Invoke-SafeDiag
+}
 

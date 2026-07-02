@@ -18,6 +18,15 @@
     irm https://raw.githubusercontent.com/maddix/MaddixSuite/main/windows/SysAdminSuite.ps1 | iex
 #>
 
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  NOTICE: This script is legacy/deprecated.                  ║
+# ║  Use the new unified launcher instead:                      ║
+# ║    .\MaddixSuite.ps1                                       ║
+# ║  Or run directly:                                           ║
+# ║    irm https://raw.githubusercontent.com/mohammadmehrani/   ║
+# ║        MaddixSuite/main/windows/MaddixSuite.ps1 | iex       ║
+# ╚══════════════════════════════════════════════════════════════╝
+
 #region Self-Elevation and Bypass
 if ($PSVersionTable.PSVersion.Major -ge 3) {
     $currentPolicy = Get-ExecutionPolicy -Scope Process
