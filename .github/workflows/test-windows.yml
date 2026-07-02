@@ -59,9 +59,4 @@ jobs:
         with:
           name: test-results-windows
           path: tests/windows/test-results.xml
-      - uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: PowerShell Tests
-          path: tests/windows/test-results.xml
-          reporter: dotnet-nunit
+
