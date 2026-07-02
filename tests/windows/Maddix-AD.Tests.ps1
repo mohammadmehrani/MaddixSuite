@@ -46,7 +46,7 @@ Describe "Maddix-AD" {
         }
 
         It "Show-Menu should not throw" {
-            Show-Menu | Should -Not -Throw
+            { Show-Menu } | Should -Not -Throw
         }
     }
 }

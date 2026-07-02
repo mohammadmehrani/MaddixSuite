@@ -192,10 +192,17 @@ function Get-ToolCategory {
 
 function Get-CategoryColor {
     param([string]$CatCode)
-    return switch ($CatCode) {
-        "SYS" { "Cyan" }; "NET" { "Blue" }; "SEC" { "Red" }; "CLN" { "Yellow" }
-        "OPT" { "Green" }; "BAK" { "Magenta" }; "DEV" { "DarkYellow" }
-        "SRV" { "DarkRed" }; "AD"  { "DarkMagenta" }; default { "Gray" }
+    switch ($CatCode) {
+        "SYS" { return "Cyan" }
+        "NET" { return "Blue" }
+        "SEC" { return "Red" }
+        "CLN" { return "Yellow" }
+        "OPT" { return "Green" }
+        "BAK" { return "Magenta" }
+        "DEV" { return "DarkYellow" }
+        "SRV" { return "DarkRed" }
+        "AD"  { return "DarkMagenta" }
+        default { return "Gray" }
     }
 }
 

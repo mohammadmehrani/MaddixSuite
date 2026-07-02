@@ -14,7 +14,7 @@ Describe "SafeDiag" {
             . "$PSScriptRoot/../../windows/SafeDiag.ps1"
             $functions = @(
                 "Phase1-Diagnostic", "Phase2-Report", "Phase3-Fixes",
-                "Phase4-Optimizations", "Phase5-Report", "Invoke-SafeDiag"
+                "Phase4-Optimize", "Phase5-Report", "Invoke-SafeDiag"
             )
             foreach ($f in $functions) {
                 (Get-Command $f -ErrorAction SilentlyContinue) | Should -Not -BeNullOrEmpty

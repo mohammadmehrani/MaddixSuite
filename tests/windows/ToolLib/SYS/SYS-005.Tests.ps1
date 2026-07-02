@@ -12,7 +12,7 @@ Describe "SYS-005" {
         $script:TestTool.ID | Should -Be "SYS-005"
     }
 
-    It "Should have a DISM action" {
-        $script:TestTool.Description | Should -Match "DISM"
+    It "Should have a disk check action" {
+        $script:TestTool.Description | Should -Match "disk"
     }
 }

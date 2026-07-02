@@ -64,4 +64,4 @@ jobs:
         with:
           name: PowerShell Tests
           path: tests/windows/test-results.xml
-          reporter: java-junit
+          reporter: dotnet-nunit
