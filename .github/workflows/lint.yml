@@ -23,9 +23,10 @@ jobs:
           Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -AllowClobber
       - name: Run Analysis
         run: |
-          $results = Invoke-ScriptAnalyzer `
-            -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          $results = Invoke-ScriptAnalyzer -Path windows/ -Recurse `
+            -Settings PSScriptAnalyzerSettings.psd1 -Severity Error
           if ($results) { $results | Format-Table; exit 1 }
+          else { Write-Output "No errors found." }
       - name: Run Analysis (Warning only)
         run: |
           Invoke-ScriptAnalyzer -Path windows/ -Recurse `
