@@ -23,8 +23,6 @@ setup() {
 }
 
 @test "finding function should add to array" {
-    THREATS=0
-    FINDINGS=()
     finding "HIGH" "Test" "Test finding" "No action"
     [ ${#FINDINGS[@]} -gt 0 ]
 }
