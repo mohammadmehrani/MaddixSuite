@@ -3,10 +3,10 @@ name: Test Windows (PowerShell)
 on:
   push:
     branches: [main]
-    paths: ['windows/**', 'tests/windows/**']
+    paths: ['windows/**', 'tests/windows/**', '.github/workflows/test-windows.yml']
   pull_request:
     branches: [main]
-    paths: ['windows/**', 'tests/windows/**']
+    paths: ['windows/**', 'tests/windows/**', '.github/workflows/test-windows.yml']
 
 jobs:
   test:
