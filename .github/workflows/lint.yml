@@ -13,10 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install PSScriptAnalyzer
+        shell: powershell
         run: |
-          Install-PackageProvider -Name NuGet -Force -ForceBootstrap -Scope CurrentUser
+          $provider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
+          if (-not $provider) {
+            Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+          }
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser -AllowClobber -SkipPublisherCheck
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -AllowClobber
       - name: Run Analysis
         run: |
           $results = Invoke-ScriptAnalyzer `
@@ -36,7 +40,7 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           scandir: ./linux
-          severity: warning
+          severity: error
 
   lint-yaml:
     name: YAML Lint
