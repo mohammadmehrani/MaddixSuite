@@ -32,7 +32,7 @@ confirm() {
 pause() { echo -e "\n  ${GRAY}Press Enter to continue...${NC}"; read -r; }
 
 # ─── AUTO-ELEVATE ───
-if [[ $EUID -ne 0 ]]; then
+if [[ $EUID -ne 0 && -z "$MADDIX_TEST_MODE" ]]; then
     echo -e "${YELLOW}  Not root. Elevating...${NC}"
     exec sudo "$0" "$@"
     exit
