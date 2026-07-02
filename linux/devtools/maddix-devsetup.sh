@@ -13,7 +13,7 @@
 # set -e (removed for testability)
 CYAN='\033[0;96m'; GREEN='\033[0;92m'; YELLOW='\033[0;93m'; RED='\033[0;91m'; MAGENTA='\033[0;95m'; GRAY='\033[0;90m'; RESET='\033[0m'
 
-[[ $EUID -eq 0 ]] || { echo -e "${RED}Run with sudo.${RESET}"; exit 1; }
+check_root() { [[ $EUID -eq 0 ]] || { echo -e "${RED}Run with sudo.${RESET}"; exit 1; } }
 
 detect_distro() {
     if [ -f /etc/os-release ]; then
@@ -105,6 +105,7 @@ show_menu() {
 
 main() {
     detect_distro
+    check_root
     while true; do
         show_menu
         read -p "Select (0-9): " c

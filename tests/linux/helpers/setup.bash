@@ -2,7 +2,7 @@
 # MaddixSuite BATS Test Setup
 # Source this file in every .bats test file
 
-export MADDIX_ROOT="${BATS_TEST_DIRNAME}/../../.."
+export MADDIX_ROOT="${BATS_TEST_DIRNAME}/../.."
 export MADDIX_TEST_MODE=1
 export PATH="${MADDIX_ROOT}/linux:${PATH}"
 

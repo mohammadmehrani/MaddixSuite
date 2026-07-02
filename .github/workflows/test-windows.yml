@@ -1,3 +1,4 @@
+---
 name: Test Windows (PowerShell)
 on:
   push:
@@ -14,12 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Pester
-        run: Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+        run: |
+          Register-PSRepository -Default
+          Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
       - name: Install PSScriptAnalyzer
-        run: Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
       - name: Lint with PSScriptAnalyzer
         run: |
-          Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          Invoke-ScriptAnalyzer -Path windows/ -Recurse `
+            -Settings PSScriptAnalyzerSettings.psd1
       - name: Run Pester Tests
         shell: pwsh
         run: |

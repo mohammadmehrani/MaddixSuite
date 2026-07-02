@@ -1,3 +1,4 @@
+---
 name: Lint
 on:
   push:
@@ -12,14 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install PSScriptAnalyzer
-        run: Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+        run: |
+          Register-PSRepository -Default
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
       - name: Run Analysis
         run: |
-          $results = Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
+          $results = Invoke-ScriptAnalyzer `
+            -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1
           if ($results) { $results | Format-Table; exit 1 }
       - name: Run Analysis (Warning only)
         run: |
-          Invoke-ScriptAnalyzer -Path windows/ -Recurse -Settings PSScriptAnalyzerSettings.psd1 -Severity Warning
+          Invoke-ScriptAnalyzer -Path windows/ -Recurse `
+            -Settings PSScriptAnalyzerSettings.psd1 -Severity Warning
 
   lint-sh:
     name: ShellCheck

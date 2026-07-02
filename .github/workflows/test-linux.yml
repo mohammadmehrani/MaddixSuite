@@ -1,3 +1,4 @@
+---
 name: Test Linux (Bash)
 on:
   push:
@@ -11,9 +12,6 @@ jobs:
   test:
     name: BATS + ShellCheck
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        distro: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
       - name: Install BATS
@@ -27,5 +25,4 @@ jobs:
         with:
           scandir: ./linux
           severity: style
-          ignore_paths: >-
-            linux/ToolLib
+          ignore_paths: linux/ToolLib
