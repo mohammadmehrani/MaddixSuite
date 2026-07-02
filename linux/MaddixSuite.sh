@@ -345,7 +345,7 @@ net_firewall() {
         fi
     else
         warn "No firewall found. Install ufw or iptables."
-        if confirm "Install ufw?"); then
+        if confirm "Install ufw?"; then
             $INSTALL ufw
             ok "ufw installed"
         fi
@@ -378,7 +378,7 @@ sec_antihack() {
     if [ -f "$ah_path" ]; then
         bash "$ah_path"
     else
-        if confirm "Download and run Anti-Hack scanner?"); then
+        if confirm "Download and run Anti-Hack scanner?"; then
             bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/security/maddix-antihack.sh)
         fi
     fi
@@ -440,7 +440,7 @@ bak_enhanced() {
     local tmp="/tmp/backup_$ts"
     mkdir -p "$tmp/files" "$tmp/db" "$tmp/archives" "$root"
 
-    if confirm "Backup MySQL databases?"); then
+    if confirm "Backup MySQL databases?"; then
         if command -v mysqldump &>/dev/null; then
             read -p "  MySQL user (root): " mu; mu=${mu:-root}
             read -s -p "  MySQL password: " mp; echo
@@ -449,7 +449,7 @@ bak_enhanced() {
         else warn "mysqldump not found"; fi
     fi
 
-    if confirm "Backup PostgreSQL?"); then
+    if confirm "Backup PostgreSQL?"; then
         if command -v pg_dumpall &>/dev/null; then
             read -p "  PG user (postgres): " pu; pu=${pu:-postgres}
             pg_dumpall -U "$pu" 2>/dev/null | gzip > "$tmp/db/postgres_$ts.psql.gz"
@@ -457,18 +457,18 @@ bak_enhanced() {
         else warn "pg_dumpall not found"; fi
     fi
 
-    if confirm "Backup directories with rsync?"); then
+    if confirm "Backup directories with rsync?"; then
         echo "  Enter paths (one per line, empty to finish):"
         while true; do read -p "  Path: " p; [ -z "$p" ] && break; [ -d "$p" ] && { rsync -aq "$p/" "$tmp/files/$(echo $p | tr '/' '_')/"; ok "Backed up $p"; } || warn "Not found: $p"; done
     fi
 
-    if confirm "Compress?"); then
+    if confirm "Compress?"; then
         tar -czf "$tmp/archives/backup_$ts.tar.gz" -C "$tmp" files db 2>/dev/null
         cp "$tmp/archives/backup_$ts.tar.gz" "$root/"
         ok "Archive: $(du -h "$root/backup_$ts.tar.gz" | cut -f1)"
     fi
 
-    if confirm "Upload to remote?"); then
+    if confirm "Upload to remote?"; then
         read -p "  FTP server: " fs; read -p "  FTP user: " fu; read -s -p "  FTP pass: " fp; echo
         read -p "  Remote path: " fpath
         if command -v curl &>/dev/null; then
@@ -487,7 +487,7 @@ dev_fish() {
         echo -e "  Fish version: $(fish --version 2>/dev/null)"
         ok "Fish is already installed"
     else
-        if confirm "Install Fish Shell (modern command-line shell)?"); then
+        if confirm "Install Fish Shell (modern command-line shell)?"; then
             case "$PKG_MGR" in
                 apt)
                     echo 'deb https://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_12/ /' | tee /etc/apt/sources.list.d/fish.list
@@ -596,12 +596,12 @@ run_tool() {
             ok "Config backup: $f"; pause ;;
         "BAK-003") bak_enhanced ;;
         "BAK-004") header "DB BACKUP"; 
-            if confirm "MySQL backup?"); then
+            if confirm "MySQL backup?"; then
                 read -p "  User: " u; read -s -p "  Pass: " p; echo
                 mysqldump -u"$u" -p"$p" --all-databases 2>/dev/null | gzip > "$BACKUP_DIR/mysql_$(date +%Y%m%d).sql.gz"
                 ok "MySQL backup done"
             fi
-            if confirm "PostgreSQL backup?"); then
+            if confirm "PostgreSQL backup?"; then
                 read -p "  User: " u
                 pg_dumpall -U "$u" 2>/dev/null | gzip > "$BACKUP_DIR/postgres_$(date +%Y%m%d).psql.gz"
                 ok "PostgreSQL backup done"
@@ -648,12 +648,12 @@ run_tool() {
             if confirm "Install Go?"; then $INSTALL golang; fi; pause ;;
         "SRV-001") header "SAMBA AD DC"; bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/linux/security/maddix-hardener.sh); pause ;;
         "SRV-002") header "DNS SERVER"; 
-            if confirm "Install Bind9?"); then
+            if confirm "Install Bind9?"; then
                 $INSTALL bind9
                 ok "Bind9 installed"; log "Bind9 installed" "SUCCESS"
             fi; pause ;;
         "SRV-003") header "DHCP SERVER"; 
-            if confirm "Install DHCP server?"); then
+            if confirm "Install DHCP server?"; then
                 case "$PKG_MGR" in
                     apt) $INSTALL isc-dhcp-server ;;
                     dnf) $INSTALL dhcp-server ;;
@@ -661,18 +661,18 @@ run_tool() {
                 ok "DHCP server installed"
             fi; pause ;;
         "SRV-004") header "WEB SERVER"; 
-            if confirm "Install Nginx?"); then $INSTALL nginx; systemctl enable --now nginx; fi
-            if confirm "Install Apache?"); then $INSTALL apache2; systemctl enable --now apache2; fi; pause ;;
+            if confirm "Install Nginx?"; then $INSTALL nginx; systemctl enable --now nginx; fi
+            if confirm "Install Apache?"; then $INSTALL apache2; systemctl enable --now apache2; fi; pause ;;
         "SRV-005") header "DATABASE SERVER"; 
-            if confirm "Install MySQL?"); then $INSTALL mysql-server; systemctl enable --now mysql; fi
-            if confirm "Install PostgreSQL?"); then $INSTALL postgresql; systemctl enable --now postgresql; fi; pause ;;
+            if confirm "Install MySQL?"; then $INSTALL mysql-server; systemctl enable --now mysql; fi
+            if confirm "Install PostgreSQL?"; then $INSTALL postgresql; systemctl enable --now postgresql; fi; pause ;;
         "SRV-006") header "MAIL SERVER"; 
-            if confirm "Install Postfix?"); then $INSTALL postfix; systemctl enable --now postfix; fi; pause ;;
+            if confirm "Install Postfix?"; then $INSTALL postfix; systemctl enable --now postfix; fi; pause ;;
         "SRV-007") header "MONITORING"; 
-            if confirm "Install Netdata?"); then bash <(curl -Ss https://my-netdata.io/kickstart.sh); fi; pause ;;
+            if confirm "Install Netdata?"; then bash <(curl -Ss https://my-netdata.io/kickstart.sh); fi; pause ;;
         "SRV-008") header "BACKUP SERVER"; 
-            if confirm "Install Borg Backup?"); then $INSTALL borgbackup; fi
-            if confirm "Install Restic?"); then $INSTALL restic; fi; pause ;;
+            if confirm "Install Borg Backup?"; then $INSTALL borgbackup; fi
+            if confirm "Install Restic?"; then $INSTALL restic; fi; pause ;;
         "help") show_help ;;
         *) warn "Unknown tool: $id" ;;
     esac
