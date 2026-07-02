@@ -64,7 +64,7 @@ detect_system() {
     IP_ADDR=$(ip route get 1 2>/dev/null | grep -oP 'src \K\S+' || echo "N/A")
     IS_VM=$(grep -qi "hypervisor" /proc/cpuinfo 2>/dev/null && echo "Yes" || echo "No")
     IS_SERVER=false
-    [[ "$OS_NAME" =~ (Server|Red Hat|CentOS|Rocky|Alma|Debian.*server) ]] && IS_SERVER=true
+    if [[ "$OS_NAME" =~ (Server|Red Hat|CentOS|Rocky|Alma|Debian.*server) ]]; then IS_SERVER=true; fi
 }
 
 # ─── LOGGING ───
@@ -401,7 +401,7 @@ cln_system() {
     # Journal
     journalctl --vacuum-size=200M 2>/dev/null && ok "Journal cleaned to 200M" || true
     # Temp
-    rm -rf /tmp/* 2>/dev/null; rm -rf /var/tmp/* 2>/dev/null
+    if [[ -z "$MADDIX_TEST_MODE" ]]; then rm -rf /tmp/* 2>/dev/null; rm -rf /var/tmp/* 2>/dev/null; fi
     ok "System cleaned"; log "System cleaned" "SUCCESS"
     pause
 }
