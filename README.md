@@ -3,6 +3,7 @@
 **Created by Mohammad Mehrani (Maddix)** · [![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE) [![PowerShell](https://img.shields.io/badge/PowerShell-3%2B-5391FE?style=flat-square&logo=PowerShell)](windows) [![Linux](https://img.shields.io/badge/Linux-Debian%2FRHEL%2FArch-E95420?style=flat-square&logo=Linux)](linux) [![فارسی](https://img.shields.io/badge/📖-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-1a73e8?style=flat-square)](README.fa.md)
 
 > 🛠️ Cross-platform system administration toolkit — diagnostic, repair, backup, security, optimization for **Windows** and **Linux**.
+> 📖 [**Wiki & User Guide** →](wiki/Home.md)
 
 ---
 

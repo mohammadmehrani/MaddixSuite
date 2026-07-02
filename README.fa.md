@@ -10,6 +10,7 @@
 [![English](https://img.shields.io/badge/🇬🇧-English-blue?style=flat-square)](README.md)
 
 > مجموعه‌ای کراس‌پلتفرم از ابزارهای مدیریت، تعمیر، پشتیبان‌گیری، امنیت و بهینه‌سازی سیستم‌عامل
+> 📖 [**ویکی و راهنمای کاربر** ←](wiki/Home.md)
 
 <br>
 
