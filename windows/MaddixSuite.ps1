@@ -208,11 +208,11 @@ function Get-CategoryColor {
 
 function Get-DangerColor {
     param([string]$Level)
-    return switch ($Level) {
-        "Safe" { "Green" }
-        "Caution" { "Yellow" }
-        "Dangerous" { "Red" }
-        default { "Gray" }
+    switch ($Level) {
+        "Safe" { return "Green" }
+        "Caution" { return "Yellow" }
+        "Dangerous" { return "Red" }
+        default { return "Gray" }
     }
 }
 
