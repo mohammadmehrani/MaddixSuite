@@ -106,7 +106,7 @@ function Show-Clues {
     } else {
         $i = 1
         foreach ($c in $script:FoundClues) {
-            Write-Color "  Clue $i: $c" "Green"
+            Write-Color "  Clue $($i): $c" "Green"
             $i++
         }
     }

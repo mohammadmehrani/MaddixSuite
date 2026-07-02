@@ -148,7 +148,7 @@ function Show-SystemInfo {
 #region ENCODED BANNER
 function Show-Banner {
     Clear-Host
-    $w = [math]::Max(70, [math]::Min(120, Get-ConsoleWidth))
+    $w = [math]::Max(70, [math]::Min(120, (Get-ConsoleWidth)))
     $line = "═" * ($w - 2)
     $pad = " " * [math]::Max(0, ($w - 38) / 2)
 
@@ -164,7 +164,7 @@ function Show-Banner {
 }
 
 function Show-HexBanner {
-    $w = [math]::Max(70, [math]::Min(120, Get-ConsoleWidth))
+    $w = [math]::Max(70, [math]::Min(120, (Get-ConsoleWidth)))
     $line = "═" * ($w - 2)
     Write-Color "╔$line╗" "Cyan"
     Write-Color "║$(" " * ($w - 3 - 42)) 4D 61 64 64 69 78 53 75 69 74 65$(" " * 0)║" "Green"
@@ -434,7 +434,7 @@ function Invoke-Tool {
 #region UI
 function Show-MenuHeader {
     Show-HexBanner
-    $w = [math]::Max(70, [math]::Min(120, Get-ConsoleWidth))
+    $w = [math]::Max(70, [math]::Min(120, (Get-ConsoleWidth)))
     $line = "═" * ($w - 2)
     $toolCount = (Get-FilteredTools).Count
     $edition = if ($script:IsServer) { "SERVER EDITION" } else { "CLIENT EDITION" }
@@ -466,7 +466,7 @@ function Show-ToolMenu {
     $grouped = $pageTools | Group-Object { [array]::IndexOf($catOrder, $_.Category) }
     $sorted = $pageTools | Sort-Object { [array]::IndexOf($catOrder, $_.Category) }, ID
 
-    $w = [math]::Max(70, [math]::Min(120, Get-ConsoleWidth))
+    $w = [math]::Max(70, [math]::Min(120, (Get-ConsoleWidth)))
     $currentCat = ""
     foreach ($tool in $sorted) {
         if ($tool.Category -ne $currentCat) {
@@ -489,7 +489,7 @@ function Show-ToolMenu {
 
 function Show-Help {
     Show-Banner
-    $w = [math]::Max(70, [math]::Min(120, Get-ConsoleWidth))
+    $w = [math]::Max(70, [math]::Min(120, (Get-ConsoleWidth)))
     $line = "═" * ($w - 2)
     Write-Color "╔$line╗" "Cyan"
     Write-Color "║$(" " * (($w - 22)/2))MADDIXSUITE HELP$(" " * (($w - 22)/2))║" "Cyan"

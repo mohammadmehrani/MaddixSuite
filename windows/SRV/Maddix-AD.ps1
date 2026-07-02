@@ -57,7 +57,7 @@ function Confirm-Step {
 }
 
 function Show-Banner {
-    Clear-Host
+    try { Clear-Host } catch { }
     Write-Color "╔═══════════════════════════════════════════════════════════╗" "Cyan"
     Write-Color "║    4D 61 64 64 69 78 53 75 69 74 65                      ║" "Cyan"
     Write-Color "║    M  a  d  d  i  x  S  u  i  t  e                      ║" "Cyan"
@@ -77,25 +77,27 @@ function Show-Menu {
     Write-Color ""
 }
 
-# ─── MAIN LOOP ───
-while ($true) {
-    Show-Menu
-    $c = Read-Host "  Select option (ID or number)"
-    Write-Color ""
-    if ($c -eq '0') { Write-Color "  Returning." "Cyan"; break }
-    $tool = $script:ADTools | Where-Object { $_.ID -eq $c } | Select-Object -First 1
-    if ($tool) {
-        Write-Color "  Executing $($tool.ID): $($tool.Name)..." "Cyan"
-        try {
-            & $tool.Action
-            Write-Color "  [+] $($tool.ID) completed." "Green"
-            Log "$($tool.ID) completed" "SUCCESS"
-        } catch {
-            Write-Color "  [!] $($tool.ID) failed: $_" "Red"
-            Log "$($tool.ID) failed: $_" "ERROR"
+# ─── MAIN LOOP (skip when sourced for tests) ───
+if ($MyInvocation.InvocationName -ne '.') {
+    while ($true) {
+        Show-Menu
+        $c = Read-Host "  Select option (ID or number)"
+        Write-Color ""
+        if ($c -eq '0') { Write-Color "  Returning." "Cyan"; break }
+        $tool = $script:ADTools | Where-Object { $_.ID -eq $c } | Select-Object -First 1
+        if ($tool) {
+            Write-Color "  Executing $($tool.ID): $($tool.Name)..." "Cyan"
+            try {
+                & $tool.Action
+                Write-Color "  [+] $($tool.ID) completed." "Green"
+                Log "$($tool.ID) completed" "SUCCESS"
+            } catch {
+                Write-Color "  [!] $($tool.ID) failed: $_" "Red"
+                Log "$($tool.ID) failed: $_" "ERROR"
+            }
+            Write-Color ""; Pause
+        } else {
+            Write-Color "  [!] Unknown option: $c" "Red"; Pause
         }
-        Write-Color ""; Pause
-    } else {
-        Write-Color "  [!] Unknown option: $c" "Red"; Pause
     }
 }

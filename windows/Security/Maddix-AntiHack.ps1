@@ -575,25 +575,27 @@ function Invoke-Cleanup {
 }
 
 # ===========================================================================
-# MAIN
+# MAIN (skip when sourced for tests)
 # ===========================================================================
-Test-Admin
-Clear-Host
-Write-Color "╔═══════════════════════════════════════════════════════════╗" "Cyan"
-Write-Color "║       MaddixSuite — Advanced Anti-Hack Scanner            ║" "Cyan"
-Write-Color "╚═══════════════════════════════════════════════════════════╝" "Cyan"
-Write-Color "  GitHub: https://github.com/mohammadmehrani/MaddixSuite" "DarkGray"
-Write-Color "  Website: https://iodeck.ir" "DarkGray"
-Write-Color "  [i] Scanning for: Keyloggers, Rootkits, Backdoors, RATs, Credential Theft, Network Attacks" "Gray"
-Write-Color ""
+if ($MyInvocation.InvocationName -ne '.') {
+    Test-Admin
+    try { Clear-Host } catch { }
+    Write-Color "╔═══════════════════════════════════════════════════════════╗" "Cyan"
+    Write-Color "║       MaddixSuite — Advanced Anti-Hack Scanner            ║" "Cyan"
+    Write-Color "╚═══════════════════════════════════════════════════════════╝" "Cyan"
+    Write-Color "  GitHub: https://github.com/mohammadmehrani/MaddixSuite" "DarkGray"
+    Write-Color "  Website: https://iodeck.ir" "DarkGray"
+    Write-Color "  [i] Scanning for: Keyloggers, Rootkits, Backdoors, RATs, Credential Theft, Network Attacks" "Gray"
+    Write-Color ""
 
-Scan-NetworkAttacks
-Scan-Keyloggers
-Scan-Persistence
-Scan-ProcessMemory
-Scan-BrowserCreds
-Scan-FirewallExploits
-Show-Report
-Invoke-Cleanup
+    Scan-NetworkAttacks
+    Scan-Keyloggers
+    Scan-Persistence
+    Scan-ProcessMemory
+    Scan-BrowserCreds
+    Scan-FirewallExploits
+    Show-Report
+    Invoke-Cleanup
 
-Write-Color "`n  Scan complete. Visit https://iodeck.ir for more tools." "DarkGray"
+    Write-Color "`n  Scan complete. Visit https://iodeck.ir for more tools." "DarkGray"
+}

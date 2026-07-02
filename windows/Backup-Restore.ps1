@@ -83,7 +83,7 @@ function Backup-Database {
 
     # SQL Server
     $sqlBackup = $false
-    if (Confirm-Step "  SQL Server" "Backup all SQL Server databases? Requires SQL Server Management Objects or sqlcmd.")) {
+    if (Confirm-Step "  SQL Server" "Backup all SQL Server databases? Requires SQL Server Management Objects or sqlcmd.") {
         try {
             $sqlServers = @("localhost", $env:COMPUTERNAME)
             foreach ($svr in $sqlServers) {
