@@ -9,8 +9,9 @@
 | [📖 Quick Start](Quick-Start) | Install & run scripts in 30 seconds |
 | [🪟 Windows Guide](Windows-Guide) | All Windows scripts explained |
 | [🐧 Linux Guide](Linux-Guide) | All Linux scripts explained |
+| [📋 AD Management Guide](AD-Guide) | 60 Active Directory tools reference |
+| [🧪 Testing & CI/CD](Testing) | Run tests, CI/CD pipeline docs |
 | [❓ FAQ & Troubleshooting](FAQ) | Common issues & solutions |
-| [🔒 Security & Best Practices](Security) | Safe usage guidelines |
 
 ## Supported Platforms
 
