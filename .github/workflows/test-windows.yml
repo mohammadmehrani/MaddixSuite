@@ -59,4 +59,3 @@ jobs:
         with:
           name: test-results-windows
           path: tests/windows/test-results.xml
-
