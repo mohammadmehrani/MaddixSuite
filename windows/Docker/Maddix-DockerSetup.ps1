@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     Maddix-DockerSetup - Docker Desktop Installer & Manager for Windows
@@ -239,3 +243,4 @@ function Main {
 }
 
 Main
+

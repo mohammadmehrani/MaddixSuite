@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 #Requires -RunAsAdministrator
 # Maddix-BSODFix.ps1 — Advanced BSOD Diagnostic & Repair (iaStorAC.sys focus)
 # Author: Mohammad Mehrani (Maddix)
@@ -520,3 +524,4 @@ Phase3-iaStorACRepair
 Phase4-SystemFileRepair
 Phase5-SystemCleanup
 Phase6-Final
+

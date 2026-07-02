@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 #!/bin/bash
 # =========================================================
 # Maddix-DockerManager - Docker Container & Image Manager
@@ -233,3 +237,4 @@ main() {
 }
 
 main "$@"
+

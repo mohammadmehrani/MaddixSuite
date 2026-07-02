@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     Maddix-SecurityAudit - Windows Security Assessment & Hardening Tool
@@ -282,3 +286,4 @@ function Main {
 }
 
 Main
+

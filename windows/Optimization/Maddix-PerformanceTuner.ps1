@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     Maddix-PerformanceTuner - Advanced Windows Performance Optimization
@@ -323,3 +327,4 @@ function Main {
 }
 
 Main
+

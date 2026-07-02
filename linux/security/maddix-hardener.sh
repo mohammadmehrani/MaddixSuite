@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 #!/bin/bash
 # =========================================================
 # Maddix-SystemHardener - Linux Security Hardening Toolkit
@@ -307,3 +311,4 @@ main() {
 }
 
 main "$@"
+

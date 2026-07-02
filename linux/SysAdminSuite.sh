@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 #!/bin/bash
 # =========================================================
 # SysAdminSuite v2.0 - Linux Edition
@@ -331,6 +335,169 @@ backup_configs() {
     log "Configs backed up to $cfg_backup" "SUCCESS"
 }
 
+# ─────────────────────────────────────────────────────────
+# ENHANCED MODULAR BACKUP (Database + Files + Remote)
+# ─────────────────────────────────────────────────────────
+
+backup_enhanced() {
+    echo -e "\n${YELLOW}═══════════════════════════════════════════════${RESET}"
+    echo -e "${YELLOW}   ENHANCED MODULAR BACKUP${RESET}"
+    echo -e "${YELLOW}═══════════════════════════════════════════════${RESET}"
+
+    local ts=$(date +%Y%m%d_%H%M%S)
+    local backup_root="$BACKUP_DIR/enhanced_$ts"
+    local tmpdir="/tmp/backup_$ts"
+    mkdir -p "$tmpdir/files" "$tmpdir/db" "$tmpdir/archives" "$backup_root"
+
+    echo -e "${GRAY}Backup directory: $backup_root${RESET}"
+    echo ""
+
+    # --- CONFIRM FUNCTION ---
+    confirm_step() {
+        local msg="$1"
+        echo -en "${YELLOW}  $msg (Y/N): ${RESET}"
+        read -r r
+        [[ "$r" =~ ^[Yy]$ ]]
+    }
+
+    # --- MODULE 1: DATABASE BACKUP (MySQL) ---
+    if confirm_step "Backup MySQL databases?"; then
+        echo -e "  ${GRAY}[1] MySQL dump...${RESET}"
+        if command -v mysqldump &>/dev/null; then
+            echo -en "  ${GRAY}MySQL user (root): ${RESET}"; read -r mysql_user
+            echo -en "  ${GRAY}MySQL password: ${RESET}"; read -rs mysql_pass; echo
+            mysql_user=${mysql_user:-root}
+            nice /usr/bin/mysqldump -u"$mysql_user" -p"$mysql_pass" --all-databases --routines --events 2>/dev/null | gzip -c > "$tmpdir/db/${HOSTNAME}_mysql_${ts}.sql.gz"
+            if [ -f "$tmpdir/db/${HOSTNAME}_mysql_${ts}.sql.gz" ] && [ -s "$tmpdir/db/${HOSTNAME}_mysql_${ts}.sql.gz" ]; then
+                echo -e "  ${GREEN}[+] MySQL backup complete ($(du -h "$tmpdir/db/${HOSTNAME}_mysql_${ts}.sql.gz" | cut -f1))${RESET}"
+            else
+                echo -e "  ${YELLOW}[!] MySQL backup failed or no data${RESET}"
+            fi
+        else
+            echo -e "  ${YELLOW}[!] mysqldump not found. Install mysql-client.${RESET}"
+        fi
+    fi
+
+    # --- MODULE 2: DATABASE BACKUP (PostgreSQL) ---
+    if confirm_step "Backup PostgreSQL databases?"; then
+        echo -e "  ${GRAY}[2] PostgreSQL dump...${RESET}"
+        if command -v pg_dumpall &>/dev/null; then
+            echo -en "  ${GRAY}PostgreSQL user (postgres): ${RESET}"; read -r pg_user
+            pg_user=${pg_user:-postgres}
+            echo -en "  ${GRAY}PostgreSQL password: ${RESET}"; read -rs pg_pass; echo
+            export PGPASSWORD="$pg_pass"
+            nice /usr/bin/pg_dumpall -U "$pg_user" 2>/dev/null | gzip -c > "$tmpdir/db/${HOSTNAME}_psql_${ts}.psql.gz"
+            unset PGPASSWORD
+            if [ -f "$tmpdir/db/${HOSTNAME}_psql_${ts}.psql.gz" ] && [ -s "$tmpdir/db/${HOSTNAME}_psql_${ts}.psql.gz" ]; then
+                echo -e "  ${GREEN}[+] PostgreSQL backup complete ($(du -h "$tmpdir/db/${HOSTNAME}_psql_${ts}.psql.gz" | cut -f1))${RESET}"
+            else
+                echo -e "  ${YELLOW}[!] PostgreSQL backup failed or no data${RESET}"
+            fi
+        else
+            echo -e "  ${YELLOW}[!] pg_dumpall not found. Install postgresql-client.${RESET}"
+        fi
+    fi
+
+    # --- MODULE 3: FILE BACKUP (rsync) ---
+    if confirm_step "Backup files/directories via rsync?"; then
+        echo -e "  ${GRAY}[3] File backup (rsync)...${RESET}"
+        echo -e "  ${GRAY}Enter directories to backup (one per line, empty line to finish):${RESET}"
+        local includes=()
+        while true; do
+            echo -en "  ${GRAY}Path: ${RESET}"; read -r inc
+            [ -z "$inc" ] && break
+            if [ -d "$inc" ]; then
+                includes+=("$inc")
+                echo -e "    ${GREEN}Added: $inc${RESET}"
+            else
+                echo -e "    ${YELLOW}Not found: $inc${RESET}"
+            fi
+        done
+        if [ ${#includes[@]} -gt 0 ]; then
+            for item in "${includes[@]}"; do
+                local safe_name=$(echo "$item" | tr '/' '_' | tr -d ':')
+                mkdir -p "$tmpdir/files/$safe_name"
+                echo -e "    ${GRAY}Rsyncing $item...${RESET}"
+                rsync -aq "$item/" "$tmpdir/files/$safe_name/" 2>/dev/null && echo -e "    ${GREEN}Done: $item${RESET}" || echo -e "    ${YELLOW}Failed: $item${RESET}"
+            done
+            echo -e "  ${GREEN}[+] File backup complete${RESET}"
+        else
+            echo -e "  ${YELLOW}[!] No directories selected${RESET}"
+        fi
+    fi
+
+    # --- MODULE 4: Drush backup (CMS) ---
+    if command -v drush &>/dev/null; then
+        if confirm_step "Backup Drupal sites via Drush?"; then
+            echo -e "  ${GRAY}[4] Drush backup...${RESET}"
+            echo -en "  ${GRAY}Drupal root path: ${RESET}"; read -r drupal_root
+            if [ -n "$drupal_root" ] && [ -f "$drupal_root/index.php" ]; then
+                mkdir -p "$tmpdir/drush"
+                drush --root="$drupal_root" --destination="$tmpdir/drush/${HOSTNAME}_drush_${ts}.tar.gz" ard 2>/dev/null
+                [ $? -eq 0 ] && echo -e "  ${GREEN}[+] Drush backup complete${RESET}" || echo -e "  ${YELLOW}[!] Drush backup failed${RESET}"
+            fi
+        fi
+    fi
+
+    # --- MODULE 5: COMPRESS & ARCHIVE ---
+    if confirm_step "Compress all backup data into a single archive?"; then
+        echo -e "  ${GRAY}[5] Compressing...${RESET}"
+        local archive="$tmpdir/archives/${HOSTNAME}_backup_${ts}.tar.gz"
+        nice tar -czf "$archive" -C "$tmpdir" files db 2>/dev/null
+        if [ -f "$archive" ]; then
+            echo -e "  ${GREEN}[+] Archive created: $(du -h "$archive" | cut -f1)${RESET}"
+            cp "$archive" "$backup_root/"
+        fi
+    fi
+
+    # --- MODULE 6: REMOTE UPLOAD ---
+    if confirm_step "Upload backup to remote location?"; then
+        echo -e "  ${GRAY}[6] Remote upload...${RESET}"
+        echo -e "    ${GRAY}1) Local folder copy${RESET}"
+        echo -e "    ${GRAY}2) FTP upload${RESET}"
+        echo -e "    ${GRAY}3) Skip${RESET}"
+        echo -en "  ${GRAY}Select (1-3): ${RESET}"; read -r ru
+
+        if [ "$ru" = "1" ]; then
+            echo -en "  ${GRAY}Destination folder: ${RESET}"; read -r dest
+            if [ -n "$dest" ]; then
+                mkdir -p "$dest"
+                cp "$archive" "$dest/" 2>/dev/null
+                echo -e "  ${GREEN}[+] Copied to $dest${RESET}"
+                # Copy DB files too
+                cp -r "$tmpdir/db" "$dest/" 2>/dev/null
+            fi
+        elif [ "$ru" = "2" ]; then
+            echo -en "  ${GRAY}FTP server: ${RESET}"; read -r ftp_srv
+            echo -en "  ${GRAY}FTP username: ${RESET}"; read -r ftp_user
+            echo -en "  ${GRAY}FTP password: ${RESET}"; read -rs ftp_pass; echo
+            echo -en "  ${GRAY}Remote path: ${RESET}"; read -r ftp_path
+            if [ -n "$ftp_srv" ] && [ -n "$ftp_user" ]; then
+                if command -v lftp &>/dev/null; then
+                    lftp -u "$ftp_user,$ftp_pass" "$ftp_srv" -e "put $archive -o $ftp_path/$(basename $archive); exit" 2>/dev/null
+                    echo -e "  ${GREEN}[+] Uploaded via lftp${RESET}"
+                elif command -v curl &>/dev/null; then
+                    curl -T "$archive" "ftp://$ftp_srv$ftp_path/" --user "$ftp_user:$ftp_pass" 2>/dev/null
+                    echo -e "  ${GREEN}[+] Uploaded via curl${RESET}"
+                else
+                    echo -e "  ${YELLOW}[!] No FTP client found (install lftp or curl)${RESET}"
+                fi
+            fi
+        fi
+    fi
+
+    # --- MODULE 7: PACKAGE LIST ---
+    backup_packages 2>/dev/null
+
+    # --- SUMMARY ---
+    echo -e "\n${CYAN}═══════════════════════════════════════════════${RESET}"
+    echo -e "${GREEN}  ENHANCED BACKUP COMPLETED${RESET}"
+    echo -e "${CYAN}  Location: $backup_root${RESET}"
+    echo -e "${CYAN}  Size: $(du -sh "$backup_root" 2>/dev/null | cut -f1)${RESET}"
+    echo -e "${CYAN}═══════════════════════════════════════════════${RESET}"
+    log "Enhanced backup completed: $backup_root" "SUCCESS"
+}
+
 restore_packages() {
     echo -e "\n${YELLOW}=== RESTORE PACKAGES FROM BACKUP ===${RESET}"
     local lists=($(ls "$BACKUP_DIR"/packages_*.list 2>/dev/null))
@@ -463,15 +630,16 @@ show_menu() {
     echo "  12.  Backup Package List"
     echo "  13.  Backup System Configs (etc, home)"
     echo "  14.  Restore Packages from Backup"
+    echo "  15.  Enhanced Backup (DB + Files + Archive + Upload)"
     echo ""
     echo -e " ${MAGENTA}---- SECURITY & HEALTH ----${RESET}"
-    echo "  15.  Security Audit (Ports, SSH, Logins)"
-    echo "  16.  System Health (Memory, Disk, Uptime)"
-    echo "  17.  System Information"
+    echo "  16.  Security Audit (Ports, SSH, Logins)"
+    echo "  17.  System Health (Memory, Disk, Uptime)"
+    echo "  18.  System Information"
     echo ""
     echo -e " ${MAGENTA}---- GENERAL ----${RESET}"
-    echo "  18.  Run ALL Repairs & Optimization"
-    echo "  19.  Show Script Version & Update"
+    echo "  19.  Run ALL Repairs & Optimization"
+    echo "  20.  Show Script Version & Update"
     echo "   0.  Exit"
     echo ""
 }
@@ -482,7 +650,7 @@ main() {
 
     while true; do
         show_menu
-        read -p "Select option (0-19): " choice
+        read -p "Select option (0-20): " choice
         case "$choice" in
             1) fix_package_manager; read -p "Press Enter..." ;;
             2) fix_broken_packages; read -p "Press Enter..." ;;
@@ -498,10 +666,11 @@ main() {
             12) backup_packages; read -p "Press Enter..." ;;
             13) backup_configs; read -p "Press Enter..." ;;
             14) restore_packages; read -p "Press Enter..." ;;
-            15) security_audit; read -p "Press Enter..." ;;
-            16) system_health; read -p "Press Enter..." ;;
-            17) system_info; read -p "Press Enter..." ;;
-            18)
+            15) backup_enhanced; read -p "Press Enter..." ;;
+            16) security_audit; read -p "Press Enter..." ;;
+            17) system_health; read -p "Press Enter..." ;;
+            18) system_info; read -p "Press Enter..." ;;
+            19)
                 echo -e "\n${YELLOW}Running ALL Repairs...${RESET}"
                 fix_package_manager
                 fix_broken_packages
@@ -511,10 +680,11 @@ main() {
                 echo -e "\n${GREEN}ALL REPAIRS COMPLETED!${RESET}"
                 read -p "Press Enter..."
                 ;;
-            19)
+            20)
                 echo -e "\n${CYAN}SysAdminSuite v2.0 - Linux Edition${RESET}"
                 echo -e "${CYAN}Part of MaddixSuite${RESET}"
                 echo -e "${CYAN}github.com/mohammadmehrani/MaddixSuite${RESET}"
+                echo -e "${CYAN}Website: https://iodeck.ir${RESET}"
                 echo -e "\n${YELLOW}Check for updates:${RESET}"
                 echo "  bash <(curl -s https://raw.githubusercontent.com/maddix/MaddixSuite/main/linux/SysAdminSuite.sh)"
                 read -p "Press Enter..."
@@ -532,3 +702,4 @@ main() {
 }
 
 main "$@"
+

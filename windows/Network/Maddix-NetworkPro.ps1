@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     Maddix-NetworkPro - Advanced Windows Network Toolkit
@@ -369,3 +373,4 @@ function Main {
 }
 
 Main
+

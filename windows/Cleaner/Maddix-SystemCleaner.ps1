@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     Maddix-SystemCleaner - Deep Windows System & Application Cleaner
@@ -344,3 +348,4 @@ function Main {
 }
 
 Main
+

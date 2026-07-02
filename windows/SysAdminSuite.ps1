@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     SysAdminSuite v2.0 - Comprehensive Windows Diagnostic, Repair, Backup & Optimization Toolkit
@@ -964,3 +968,4 @@ function Main {
 
 Main
 #endregion
+

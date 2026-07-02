@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 <#
 .SYNOPSIS
     SafeDiag - Windows Safe Diagnostic & Troubleshooting Tool
@@ -597,3 +601,4 @@ if ($script:Issues.Count -gt 0) {
 
 Phase5-Report
 Write-Host "  Report saved to: $script:ReportPath" -ForegroundColor Yellow
+

@@ -1,3 +1,7 @@
+﻿# ============================================================================
+# MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
+# Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
+# ============================================================================
 #!/bin/bash
 # =========================================================
 # Maddix-IPTables - Advanced Firewall Manager for Linux
@@ -253,3 +257,4 @@ main() {
 }
 
 main "$@"
+
