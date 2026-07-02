@@ -55,7 +55,7 @@ function Write-Color {
     if ($NoNewline) { Write-Host $Text -ForegroundColor $Color -NoNewline } else { Write-Host $Text -ForegroundColor $Color }
 }
 
-function Get-ConsoleWidth { return $Host.UI.RawUI.WindowSize.Width }
+function Get-ConsoleWidth { try { return $Host.UI.RawUI.WindowSize.Width } catch { return 120 } }
 #endregion
 
 #region SYSTEM DETECTION
@@ -176,11 +176,17 @@ function Show-HexBanner {
 #region TOOL LOADING SYSTEM
 function Get-ToolCategory {
     param([string]$CatCode)
-    return switch ($CatCode) {
-        "SYS" { "System Tools" }; "NET" { "Network Tools" }; "SEC" { "Security Tools" }
-        "CLN" { "Cleaner Tools" }; "OPT" { "Optimization Tools" }; "BAK" { "Backup Tools" }
-        "DEV" { "Development Tools" }; "SRV" { "Server Tools" }; "AD"  { "Active Directory" }
-        default { "Unknown" }
+    switch ($CatCode) {
+        "SYS" { return "System Tools" }
+        "NET" { return "Network Tools" }
+        "SEC" { return "Security Tools" }
+        "CLN" { return "Cleaner Tools" }
+        "OPT" { return "Optimization Tools" }
+        "BAK" { return "Backup Tools" }
+        "DEV" { return "Development Tools" }
+        "SRV" { return "Server Tools" }
+        "AD"  { return "Active Directory" }
+        default { return "Unknown" }
     }
 }
 
