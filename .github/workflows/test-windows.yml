@@ -34,25 +34,25 @@ jobs:
       - name: Run Pester Tests
         shell: pwsh
         run: |
-Import-Module Pester -PassThru
-$config = New-PesterConfiguration -Hashtable @{
-  Run = @{
-    Path = @('tests/windows/')
-    Exit = $true
-    PassThru = $true
-  }
-  Output = @{
-    Verbosity = 'Detailed'
-    CIFormat = 'Auto'
-  }
-  TestResult = @{
-    Enabled = $true
-    OutputFormat = 'NUnitXml'
-    OutputPath = 'tests/windows/test-results.xml'
-  }
-}
-$r = Invoke-Pester -Configuration $config
-if ($r.FailedCount -gt 0) { exit 1 }
+          Import-Module Pester -PassThru
+          $config = New-PesterConfiguration -Hashtable @{
+            Run = @{
+              Path = @('tests/windows/')
+              Exit = $true
+              PassThru = $true
+            }
+            Output = @{
+              Verbosity = 'Detailed'
+              CIFormat = 'Auto'
+            }
+            TestResult = @{
+              Enabled = $true
+              OutputFormat = 'NUnitXml'
+              OutputPath = 'tests/windows/test-results.xml'
+            }
+          }
+          $r = Invoke-Pester -Configuration $config
+          if ($r.FailedCount -gt 0) { exit 1 }
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
