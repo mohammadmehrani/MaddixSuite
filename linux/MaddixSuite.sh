@@ -14,6 +14,7 @@ BOLD='\033[1m'
 
 SCRIPT_VERSION="3.0"
 PENDING_REBOOT=false
+log_file="/dev/null"
 
 # ─── HELPERS ───
 header() { echo -e "\n${CYAN}╔═══════════════════════════════════════════════════════════╗${NC}"; echo -e "${CYAN}║  $1${NC}"; echo -e "${CYAN}╚═══════════════════════════════════════════════════════════╝${NC}"; }
@@ -29,7 +30,7 @@ confirm() {
     [[ "$r" =~ ^[Yy]$ ]]
 }
 
-pause() { echo -e "\n  ${GRAY}Press Enter to continue...${NC}"; read -r; }
+pause() { [[ -n "$MADDIX_TEST_MODE" ]] && return; echo -e "\n  ${GRAY}Press Enter to continue...${NC}"; read -r; }
 
 # ─── AUTO-ELEVATE ───
 if [[ $EUID -ne 0 && -z "$MADDIX_TEST_MODE" ]]; then

@@ -13,7 +13,7 @@ setup() {
 }
 
 @test "detect_system should set environment variables" {
-    run detect_system
+    detect_system
     [ -n "$OS_NAME" ]
     [ -n "$OS_ID" ]
     [ -n "$KERNEL" ]
@@ -53,8 +53,7 @@ setup() {
 
 @test "SYS-001 sys_info should not error" {
     detect_system
-    run sys_info
-    [ "$status" -eq 0 ]
+    sys_info
 }
 
 @test "NET-001 net_diag should not error" {
