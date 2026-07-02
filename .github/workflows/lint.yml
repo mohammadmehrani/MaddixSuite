@@ -24,9 +24,10 @@ jobs:
       - name: Run Analysis
         run: |
           $results = Invoke-ScriptAnalyzer -Path windows/ -Recurse `
-            -Settings PSScriptAnalyzerSettings.psd1 -Severity Error
-          if ($results) { $results | Format-Table; exit 1 }
-          else { Write-Output "No errors found." }
+            -Settings PSScriptAnalyzerSettings.psd1
+          $errors = $results | Where-Object { $_.Severity -eq 'Error' }
+          if ($errors) { $errors | Format-Table; exit 1 }
+          else { Write-Output "No errors found (warnings ignored)." }
       - name: Run Analysis (Warning only)
         run: |
           Invoke-ScriptAnalyzer -Path windows/ -Recurse `

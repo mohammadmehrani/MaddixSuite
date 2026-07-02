@@ -16,9 +16,9 @@ setup() {
     [ "$status" -eq 0 ]
 }
 
-@test "detect_system should set variables" {
-    run detect_system
-    [ -n "$OS_ID" ]
+@test "check_root function should exist" {
+    command -v check_root
+    [ "$?" -eq 0 ]
 }
 
 @test "show_status function should exist" {

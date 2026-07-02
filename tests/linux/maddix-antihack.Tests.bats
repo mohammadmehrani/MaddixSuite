@@ -12,7 +12,7 @@ setup() {
 }
 
 @test "detect_distro should identify package manager" {
-    run detect_distro
+    detect_distro
     [ -n "$DISTRO" ]
     [ -n "$PKG_MGR" ]
 }
@@ -25,8 +25,8 @@ setup() {
 @test "finding function should add to array" {
     THREATS=0
     FINDINGS=()
-    run finding "HIGH" "Test" "Test finding" "No action"
-    [ "$status" -eq 0 ]
+    finding "HIGH" "Test" "Test finding" "No action"
+    [ ${#FINDINGS[@]} -gt 0 ]
 }
 
 @test "scan_rootkits should not error" {

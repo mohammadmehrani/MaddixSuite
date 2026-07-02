@@ -16,17 +16,17 @@ setup() {
     [ "$status" -eq 0 ]
 }
 
-@test "detect_system should set variables" {
-    run detect_system
+@test "detect_distro should set OS_ID" {
+    detect_distro
     [ -n "$OS_ID" ]
 }
 
-@test "ssh_harden function should exist" {
-    command -v ssh_harden
+@test "audit_ssh function should exist" {
+    command -v audit_ssh
     [ "$?" -eq 0 ]
 }
 
-@test "kernel_harden function should exist" {
-    command -v kernel_harden
+@test "harden_sysctl function should exist" {
+    command -v harden_sysctl
     [ "$?" -eq 0 ]
 }
