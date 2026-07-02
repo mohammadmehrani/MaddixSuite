@@ -15,7 +15,7 @@ info() { echo -e "  ${GRAY}$1${NC}"; }
 ok() { echo -e "  ${GREEN}[+] $1${NC}"; }
 warn() { echo -e "  ${YELLOW}[!] $1${NC}"; }
 crit() { echo -e "  ${RED}[!!] $1${NC}"; }
-finding() { local sev="$1" cat="$2" msg="$3" sug="$4"; FINDINGS+=("$sev|$cat|$msg|$sug"); if [[ "$sev" == "CRITICAL" || "$sev" == "HIGH" ]]; then ((THREATS++)); fi; }
+finding() { local sev="$1" cat="$2" msg="$3" sug="$4"; FINDINGS+=("$sev|$cat|$msg|$sug"); if [[ "$sev" == "CRITICAL" || "$sev" == "HIGH" ]]; then THREATS=$((THREATS+1)); fi; }
 
 confirm() {
     echo -en "  ${YELLOW}Proceed? (Y/N): ${NC}"; read -r r
