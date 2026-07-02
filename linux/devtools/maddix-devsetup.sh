@@ -1,9 +1,8 @@
-﻿# ============================================================================
+#!/bin/bash
+# ============================================================================
 # MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
 # Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
 # ============================================================================
-#!/bin/bash
-# =========================================================
 # Maddix-DevSetup - Developer Environment Installer
 # Part of MaddixSuite by Mohammad Mehrani (Maddix)
 # Installs essential dev tools: editors, languages, DBs, git, docker, cloud CLIs

@@ -171,7 +171,7 @@ scan_keyloggers() {
         if [ -n "$maps" ]; then
             local pname
             pname=$(cat "$pid_dir/comm" 2>/dev/null)
-            if [ "$pname" != "systemd" ] && [ "$pname" != "kworker"* ] && [ "$pname" != "Xorg" ] && [ "$pname" != "X" ]; then
+            if [[ "$pname" != "systemd" && "$pname" != "kworker"* && "$pname" != "Xorg" && "$pname" != "X" ]]; then
                 finding "HIGH" "Keylogger" "Keyboard memory mapped in PID $pid ($pname)" "Investigate: sudo cat /proc/$pid/maps | grep -i keyboard"
                 warn "Process $pname (PID $pid) maps keyboard memory"
             fi

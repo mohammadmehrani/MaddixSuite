@@ -1,9 +1,8 @@
-﻿# ============================================================================
+#!/bin/bash
+# ============================================================================
 # MaddixSuite — https://github.com/mohammadmehrani/MaddixSuite
 # Author: Mohammad Mehrani (Maddix) — https://iodeck.ir
 # ============================================================================
-#!/bin/bash
-# =========================================================
 # SysAdminSuite v2.0 - Linux Edition LEGACY
 # Part of MaddixSuite by Mohammad Mehrani (Maddix)
 # https://github.com/mohammadmehrani/MaddixSuite

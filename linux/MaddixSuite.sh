@@ -319,7 +319,7 @@ net_firewall() {
     header "FIREWALL MANAGER"
     if command -v ufw &>/dev/null; then
         ufw status verbose
-        if confirm "Enable/configure UFW?"); then
+        if confirm "Enable/configure UFW?"; then
             ufw default deny incoming
             ufw default allow outgoing
             ufw allow ssh
@@ -331,7 +331,7 @@ net_firewall() {
     elif command -v iptables &>/dev/null; then
         iptables -L -n --line-numbers | head -30
         echo ""
-        if confirm "Apply default secure rules?"); then
+        if confirm "Apply default secure rules?"; then
             iptables -P INPUT DROP
             iptables -P FORWARD DROP
             iptables -P OUTPUT ACCEPT

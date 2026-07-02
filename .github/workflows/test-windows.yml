@@ -16,11 +16,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Pester
         run: |
-          Register-PSRepository -Default
+          Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
       - name: Install PSScriptAnalyzer
         run: |
-          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser -AllowClobber
       - name: Lint with PSScriptAnalyzer
         run: |
           Invoke-ScriptAnalyzer -Path windows/ -Recurse `
