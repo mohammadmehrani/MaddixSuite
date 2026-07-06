@@ -55,6 +55,7 @@ bash <(curl -s https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/mai
 | **شبکه** | `Maddix-NetworkPro.ps1` | دیاگنوستیک، WiFi، DNS، سرعت‌سنج |
 | **پاکساز** | `Maddix-SystemCleaner.ps1` | پاکسازی عمیق: کش، لاگ، مرورگر، فایل تکراری |
 | **امنیت** | `Maddix-SecurityAudit.ps1` | اسکن پورت، فایروال، کاربران، وضعیت آنتی‌ویروس |
+| **BSOD Fix** | `BSOD-Fix.ps1` | تعمیر خودکار خطای 0xD1 ناشی از iaStorAC.sys در هایبرنیت - تشخیص هوشمند، ۳ راه حل پیشنهادی |
 | **بهینه‌سازی** | `Maddix-PerformanceTuner.ps1` | CPU، RAM، دیسک، GPU، استارتاپ، پاور، شبکه |
 | **داکر** | `Maddix-DockerSetup.ps1` | نصب و مدیریت Docker Desktop + WSL2 |
 

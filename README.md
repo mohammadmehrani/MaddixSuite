@@ -35,6 +35,14 @@
 
 ## 📦 Script Catalog
 
+### 🔧 BSOD 0xD1 Finder & Fixer
+
+| Script | Description |
+|--------|-------------|
+| [`BSOD-Fix.ps1`](windows/BSOD-Fix.ps1) | Interactive fix for **DRIVER_IRQL_NOT_LESS_OR_EQUAL (0xD1)** caused by Intel RST (iaStorAC.sys) on hibernation resume. Auto-detects the crash pattern, offers 3 indexed solutions with recommendations, optimizes system, and supports post-reboot continuation. |
+| [`BSOD-Fix.cmd`](windows/BSOD-Fix.cmd) | CMD launcher (auto-elevates PowerShell). One-liner: `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/BSOD-Fix.ps1 \| iex` |
+| [`bsod-fix.sh`](linux/bsod-fix.sh) | Linux counterpart: kernel crash diagnostic + journal trim + temp cleanup. |
+
 ### 🪟 Windows — 200+ ID-based tools
 
 | Category | Prefix | Description | Tools |
@@ -49,7 +57,7 @@
 | **Dev Tools** | `DEV-` | Docker, WSL2, Git, Node, Python, VS Code, PowerShell 7 | 10+ |
 | **Server Tools** | `SRV-` | Hyper-V, IIS, WSUS, RDP, Storage Spaces, Server Backup | 10+ |
 | **Active Directory** | `AD-` | Domains, GPO, replication, FSMO, DNS, DHCP, certs, LAPS | 60+ |
-| **Specialized** | Separate | SafeDiag, BSODFix, AntiHack, Backup-Restore, RegistryTool | 8 |
+| **Specialized** | Separate | SafeDiag, BSOD-Fix, AntiHack, Backup-Restore, RegistryTool | 9 |
 
 ### 🐧 Linux — 50+ ID-based tools
 
