@@ -39,7 +39,7 @@
 
 | Script | Description |
 |--------|-------------|
-| [`BSOD-Fix.ps1`](windows/BSOD-Fix.ps1) | Interactive fix for **DRIVER_IRQL_NOT_LESS_OR_EQUAL (0xD1)** caused by Intel RST (iaStorAC.sys) on hibernation resume. Auto-detects the crash pattern, offers 3 indexed solutions with recommendations, optimizes system, and supports post-reboot continuation. [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-F58025?style=flat-square&logo=stackoverflow)](https://stackoverflow.com/questions/79974989/driver-irql-not-less-or-equal-0xd1-crash-with-null0xc8-pattern-on-hibernation-r) |
+| [`BSOD-Fix.ps1`](windows/BSOD-Fix.ps1) | Interactive fix for **BSOD 0xD1/0x0A** caused by Intel RST (iaStorAC.sys) on hibernation resume and boot with fast startup. Detects crash pattern, offers 3 solutions, optimizes system, supports post-reboot. [![Stack Overflow](https://img.shields.io/badge/Stack%20Overflow-F58025?style=flat-square&logo=stackoverflow)](https://stackoverflow.com/questions/79974989/driver-irql-not-less-or-equal-0xd1-crash-with-null0xc8-pattern-on-hibernation-r) |
 | [`BSOD-Fix.cmd`](windows/BSOD-Fix.cmd) | CMD launcher (auto-elevates PowerShell). One-liner: `irm https://raw.githubusercontent.com/mohammadmehrani/MaddixSuite/main/windows/BSOD-Fix.ps1 \| iex` |
 | [`bsod-fix.sh`](linux/bsod-fix.sh) | Linux counterpart: kernel crash diagnostic + journal trim + temp cleanup. |
 

@@ -15,7 +15,7 @@ function Write-Flag { param([string]$S, [string]$M) switch($S){'OK'{Write-Host "
 function Write-Cat {
     Write-Host @"
 
-        /\_/\   MaddixSuite - BSOD 0xD1 Finder & Fixer
+        /\_/\   MaddixSuite - BSOD 0xD1/0x0A Finder & Fixer
        ( o.o )  Author: Mohammad Mehrani (Maddix)
         > ^ <   https://github.com/mohammadmehrani/MaddixSuite
 
@@ -23,11 +23,21 @@ function Write-Cat {
 }
 
 function Test-BSODSignature {
-    $bugchecks = Get-WinEvent -LogName System -FilterXPath "*[System[EventID=1001]]" -MaxEvents 10 -ErrorAction SilentlyContinue
+    $bugchecks = Get-WinEvent -LogName System -FilterXPath "*[System[EventID=1001]]" -MaxEvents 15 -ErrorAction SilentlyContinue
     $found = @()
     foreach ($event in $bugchecks) {
         $msg = $event.Message
-        if ($msg -match "0x000000d1" -and $msg -match "0x00000000000000c8.*0x0000000000000002.*0x0000000000000000") {
+        $foundMatch = $false
+        if ($msg -match "0x000000d1" -and $msg -match "0x00000000000000c8.*0x0000000000000002") {
+            $foundMatch = $true
+        }
+        if ($msg -match "0x0000000a" -and $msg -match "0x0000000000000028.*0x0000000000000002") {
+            $foundMatch = $true
+        }
+        if ($msg -match "0x0000000a|0x000000d1" -and $msg -match "0x0000000000000002") {
+            $foundMatch = $true
+        }
+        if ($foundMatch) {
             $found += [PSCustomObject]@{Time = $event.TimeCreated; Message = $msg}
         }
     }
@@ -37,6 +47,11 @@ function Test-BSODSignature {
 function Test-Hibernation {
     $hiber = Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Power" -Name HibernateEnabled -ErrorAction SilentlyContinue
     return ($hiber.HibernateEnabled -eq 1)
+}
+
+function Test-FastStartup {
+    $fast = Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name HiberbootEnabled -ErrorAction SilentlyContinue
+    return ($fast.HiberbootEnabled -eq 1)
 }
 
 function Test-IntelRST {
@@ -65,21 +80,28 @@ function Invoke-Phase1Diagnostic {
 
     $bsodEvents = Test-BSODSignature
     $hiberOn = Test-Hibernation
+    $fastOn = Test-FastStartup
     $rst = Test-IntelRST
 
     if ($bsodEvents.Count -gt 0) {
-        Write-Flag "ERR" "BSOD 0xD1 (iaStorAC pattern) detected - $($bsodEvents.Count) crash(es) found"
+        Write-Flag "ERR" "BSOD 0xD1/0x0A (iaStorAC pattern) detected - $($bsodEvents.Count) crash(es) found"
         foreach ($e in $bsodEvents) {
             Write-Host "       $($e.Time.ToString('yyyy-MM-dd HH:mm'))"
         }
     } else {
-        Write-Flag "OK" "No BSOD 0xD1 with iaStorAC signature detected"
+        Write-Flag "OK" "No BSOD 0xD1/0x0A with DISPATCH_LEVEL pattern detected"
     }
 
     if ($hiberOn) {
         Write-Flag "WARN" "Hibernation is ENABLED - known trigger for this BSOD"
     } else {
         Write-Flag "OK" "Hibernation is disabled"
+    }
+
+    if ($fastOn) {
+        Write-Flag "WARN" "Fast Startup is ENABLED - uses hibernation mechanism, can trigger crash on boot"
+    } else {
+        Write-Flag "OK" "Fast Startup is disabled"
     }
 
     if ($rst.Present) {
@@ -93,7 +115,7 @@ function Invoke-Phase1Diagnostic {
         Write-Flag "OK" "Intel RST not detected"
     }
 
-    return @{BSOD=$bsodEvents; Hibernation=$hiberOn; RST=$rst}
+    return @{BSOD=$bsodEvents; Hibernation=$hiberOn; FastStartup=$fastOn; RST=$rst}
 }
 
 function Show-Solutions {
@@ -102,9 +124,9 @@ function Show-Solutions {
     Write-Host @"
 Select a solution:
 
-  [1] Disable Hibernation (RECOMMENDED)
+  [1] Disable Hibernation + Fast Startup (RECOMMENDED)
       - Keeps Intel RST driver (full speed)
-      - Prevents the hibernation resume that triggers the crash
+      - Disables both hibernation and fast startup
       - Sleep (S3) still works
       - Safest option with 100% success rate
 
@@ -143,10 +165,12 @@ function Invoke-Phase2Fix {
 
     switch ($Solution) {
         1 {
-            Write-Flag "INFO" "Disabling hibernation..."
+            Write-Flag "INFO" "Disabling hibernation and fast startup..."
             powercfg /h off
             Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name HiberbootEnabled -Value 0 -Type DWord -ErrorAction SilentlyContinue
+            Start-Sleep -Seconds 2
             if (Test-Hibernation) { Write-Flag "ERR" "Failed to disable hibernation" } else { Write-Flag "OK" "Hibernation disabled" }
+            if (Test-FastStartup) { Write-Flag "ERR" "Failed to disable fast startup" } else { Write-Flag "OK" "Fast startup disabled" }
         }
         2 {
             Write-Flag "INFO" "Preparing Intel RST driver update..."
@@ -223,9 +247,9 @@ function Invoke-Banner {
     Write-Host ""
 
     if (-not $Resume) {
-        Write-Host "  This tool detects and fixes BSOD 0xD1 caused by" -ForegroundColor White
-        Write-Host "  iaStorAC.sys (Intel RST) on hibernation resume." -ForegroundColor White
-        Write-Host "  It offers 3 solutions ranked by safety and effectiveness." -ForegroundColor White
+        Write-Host "  Detects and fixes BSOD 0xD1/0x0A caused by iaStorAC.sys (Intel RST)" -ForegroundColor White
+        Write-Host "  Crashes on hibernation resume and boot (fast startup)." -ForegroundColor White
+        Write-Host "  3 solutions ranked by safety and effectiveness." -ForegroundColor White
         Write-Host "  --------------------------------------------------" -ForegroundColor DarkGray
     }
 }
@@ -251,12 +275,15 @@ function Invoke-BSODFix {
     }
 
     if ($diagnosis.Hibernation) {
-        Write-Flag "WARN" "Hibernation is active - this is the most likely cause of your 0xD1 crashes"
-        Write-Flag "WARN" "The Intel RST driver (iaStorAC.sys) has a known bug on resume from hibernation"
+        Write-Flag "WARN" "Hibernation is active - known trigger for BSOD on resume"
+    }
+
+    if ($diagnosis.FastStartup) {
+        Write-Flag "WARN" "Fast Startup is active - uses hibernation mechanism, can crash on every boot"
     }
 
     if ($diagnosis.RST.Present) {
-        Write-Flag "INFO" "iaStorAC.sys v$($diagnosis.RST.Version) detected - this is involved in the crash pattern"
+        Write-Flag "INFO" "iaStorAC.sys v$($diagnosis.RST.Version) detected - this driver is involved in the crash"
     }
 
     $solution = Show-Solutions -Diagnosis $diagnosis
@@ -268,7 +295,7 @@ function Invoke-BSODFix {
 
         Write-Flag "SECTION" "SUMMARY"
         switch ($solution) {
-            1 { Write-Flag "OK" "Hibernation disabled - BSOD should not recur" }
+            1 { Write-Flag "OK" "Hibernation + Fast Startup disabled - BSOD should not recur on boot or resume" }
             2 { Write-Flag "INFO" "Driver update prepared - run SetupRST.exe downloaded from Intel" }
             3 { Write-Flag "INFO" "Switched to storahci - reboot required" }
         }
